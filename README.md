@@ -1,6 +1,6 @@
 # Genesis E-Learning Platform
 
-### ProjectDescription
+### Project Description
 
 We are developing a system titled "Genesis E-Learning Platform" that provides both authenticated (logged-in) and non-authenticated (guest) modes. This system will have the ability to provide accessible and engaging educational content for learners of all ages and other participants in education like teachers. It will combine teacher's documents such as lesson plans and scheme of work and students' content such as past papers for national exams, interactive text, and video content.
 
