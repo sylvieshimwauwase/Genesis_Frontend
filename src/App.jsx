@@ -9,6 +9,7 @@ function App() {
       <Header /> {/* This is where the Hello component will appear */}
       <SideBar />
       <Footer />
+      
     </div>
   );
 }
