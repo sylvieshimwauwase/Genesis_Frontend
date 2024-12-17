@@ -1,16 +1,14 @@
 import React from 'react';
-import Header from './components/Header';
-import SideBar from './components/SideBar';
-import Footer from './components/Footer';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// import { ToastContainer } from 'react-toastify';
+import HomePage from './pages/HomePage';
 function App() {
   return (
-    <div>
-      <h1>Genesis Elearning</h1>
-      <Header /> {/* This is where the Hello component will appear */}
-      <SideBar />
-      <Footer />
-      
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+    </Routes>
+    </BrowserRouter>
   );
 }
 
