@@ -5,9 +5,9 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#333333] text-white fixed bottom-0 left-0 w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-4">
-        <div className="border-t border-gray-700 py-4 flex flex-col md:flex-row justify-between items-center">
+    <footer className="bg-[#133459] text-white fixed bottom-0 left-0 w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-4 lg:px-3">
+        <div className="border-t border-gray-700 px-48 py-4 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-gray-300">&copy; {currentYear} Genesis E-Learning</p>
           <div className="flex mt-4 md:mt-0 space-x-6">
             
