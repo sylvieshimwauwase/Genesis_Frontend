@@ -5,21 +5,15 @@ import logo from '../assets/images/GenesisOfficialLogo.png';
 
 function Header(props) {
   return (
-    <header className="bg-[#333333] fixed top-0 left-0 w-full shadow-md z-50 md:block">
-      <div className="flex items-center justify-between max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center space-x-2">
-          <img
-            src={logo}
-            alt="Logo"
-            className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10"
-          />
+    <header className="bg-[#333333] sticky top-0 left-0 h-20 w-full shadow-md z-50 md:block">
+      <div className="flex h-full items-center justify-between max-w-7xl mx-auto px-4 py-3">
+       
           <button
             onClick={props.toggleSidebar}
-            className="px-24 bg-transparent text-white rounded-md focus:outline-none"
+            className="px-2 bg-transparent text-white rounded-md focus:outline-none"
           >
             <FaBars className="h-6 w-6" />
           </button>
-        </div>
 
         {/* Right Section: Search and Login */}
         <div className="flex items-center space-x-4">

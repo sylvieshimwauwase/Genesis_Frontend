@@ -2,46 +2,55 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');  // Add state for first name
+  const [lastName, setLastName] = useState('');    // Add state for last name
+  const [identifier, setIdentifier] = useState(''); // Holds email or phone number
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Use navigate for routing
+  const navigate = useNavigate();
+
+  // Regex for validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation
+  const phoneRegex = /^[0-9]{10}$/; // Validate phone number with exactly 10 digits
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/; // Password validation
 
   // Handle registration form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate fields
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      setError('Please fill in all fields.');
+    // Validate identifier (email or phone)
+    if (!identifier) {
+      setError('Please provide an email or phone number.');
+      return;
+    }
+    if (!emailRegex.test(identifier) && !phoneRegex.test(identifier)) {
+      setError('Please provide a valid email or phone number.');
       return;
     }
 
-    // Validate password strength
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    // Validate password
     if (!passwordRegex.test(password)) {
-      setError('Password must be at least 8 characters long and include numbers and symbols.');
+      setError('Password must be at least 8 characters long and include letters, numbers, and symbols.');
       return;
     }
 
-    // Check if passwords match
+    // Validate password confirmation
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
 
-    // Handle the registration logic here (e.g., sending data to an API)
+    // Clear error and handle registration (e.g., send data to the server)
+    setError('');
     alert('Account created successfully!');
-    // Reset the form fields
+
+    // Reset form
     setFirstName('');
     setLastName('');
-    setEmail('');
+    setIdentifier('');
     setPassword('');
     setConfirmPassword('');
-    setError('');
   };
 
   return (
@@ -72,14 +81,16 @@ const Register = () => {
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+          <label htmlFor="identifier" className="block text-sm font-medium text-gray-700">
+            Email or Phone Number
+          </label>
           <input
-            type="email"
-            id="email"
+            type="text"
+            id="identifier"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email or phone number"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
           />
         </div>
         <div>
@@ -119,7 +130,7 @@ const Register = () => {
         <p className="text-sm text-gray-600">
           Already have an account?{' '}
           <button
-            onClick={() => navigate('/login')} // Navigate to the login page
+            onClick={() => navigate('/login')}
             className="text-blue-600 hover:underline"
           >
             Login here
@@ -128,6 +139,6 @@ const Register = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Register;

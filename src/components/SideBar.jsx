@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import logo from "../assets/images/GenesisOfficialLogo.png";
 import {
   FaInfoCircle,
   FaBook,
@@ -34,84 +35,132 @@ const SideBar = (props) => {
     navigate(route);
   };
 
-  const toggleSubmenu = (itemName) => {
+  const toggleSubmenu = (itemName, e) => {
+    e.stopPropagation();
     setExpandedItem((prev) => (prev === itemName ? null : itemName));
+  };
+
+  const submenuItems = {
+    'Books': [
+      { name: 'P6 Books', route: '/books/p6' },
+      { name: 'Ordinary Level Books', route: '/books/ordinary-level' },
+      { name: 'Advanced Level Books', route: '/books/advanced-level' },
+    ],
+    'Exams': [
+      { name: 'P6 Exams', route: '/exams/p6' },
+      { name: 'Ordinary Level Exams', route: '/exams/ordinary-level' },
+      { name: 'Advanced Level Exams', route: '/exams/advanced-level' },
+    ],
+    'Scheme of Work': [
+      { name: 'P6 Scheme of Work', route: '/scheme-of-work/p6' },
+      { name: 'Ordinary Level Scheme of Work', route: '/scheme-of-work/ordinary-level' },
+      { name: 'Advanced Level Scheme of Work', route: '/scheme-of-work/advanced-level' },
+    ],
+    'Lesson Plan': [
+      { name: 'P6 Lesson Plan', route: '/lesson-plan/p6' },
+      { name: 'Ordinary Level Lesson Plan', route: '/lesson-plan/ordinary-level' },
+      { name: 'Advanced Level Lesson Plan', route: '/lesson-plan/advanced-level' },
+    ],
+    'Notes': [
+      { name: 'P6 Notes', route: '/notes/p6' },
+      { name: 'Ordinary Level Notes', route: '/notes/ordinary-level' },
+      { name: 'Advanced Level Notes', route: '/notes/advanced-level' },
+    ],
   };
 
   return (
     <>
       {props.isSidebarVisible && (
-        <div className="sticky top-0 w-64 h-full bg-white text-black flex flex-col pt-20 shadow-lg transition-transform duration-300 overflow-y-auto">
-          
-          {menuItems.map((item) => (
-            <div key={item.id}>
-              <div
-                onClick={() => handleNavigation(item.name, item.route)}
-                className={`px-6 py-4 flex items-center cursor-pointer border-b border-gray-300
-                ${activeItem === item.name ? 'text-blue-500 border-blue-500' : 'hover:text-blue-500'}`}
-              >
-               
-                <span className="text-green-300">{item.icon}</span>
-               
-                <p
-                  className={`text-md font-md ml-2 ${
-                    activeItem === item.name ? 'text-blue-500' : 'hover:text-blue-500'
-                  }`}
+        <div className="w-72 h-screen sticky top-0 bg-white text-black flex flex-col shadow-lg transition-transform duration-300">
+          <div className="flex min-h-20 justify-center space-x-6 items-center bg-[#333333]">
+            <img
+              src={logo}
+              alt="Logo"
+              className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10"
+            />
+            <div>
+              <h2 className="text-white font-bold text-xl tracking-widest">
+                GENESIS
+              </h2>
+              <p className="text-white text-xs"> E-Learning</p>
+            </div>
+          </div>
+          <div className="overflow-y-scroll">
+            {menuItems.map((item) => (
+              <div key={item.id}>
+                <div
+                  // Prevent navigation if clicking the main menu item (e.g., Books, Exams)
+                  onClick={(e) => {
+                    if (
+                      item.name !== "Books" &&
+                      item.name !== "Exams" &&
+                      item.name !== "Scheme of Work" &&
+                      item.name !== "Lesson Plan" &&
+                      item.name !== "Notes"
+                    ) {
+                      handleNavigation(item.name, item.route);
+                    } else {
+                      toggleSubmenu(item.name, e); // Toggle the dropdown
+                    }
+                  }}
+                  className={`px-6 py-4 flex items-center cursor-pointer border-b border-gray-300
+                ${
+                  activeItem === item.name
+                    ? "text-blue-500 border-blue-500"
+                    : "hover:text-blue-500"
+                }`}
                 >
-                  {item.name}
-                </p>
-                {(item.name === 'Books' ||
-                  item.name === 'Scheme of Work' ||
-                  item.name === 'Lesson Plan' ||
-                  item.name === 'Notes' ||
-                  item.name === 'Exams') && (
-                  <span
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleSubmenu(item.name);
-                    }}
-                    className="ml-auto text-gray-500"
+                  <span className="text-green-300">{item.icon}</span>
+                  <p
+                    className={`text-md font-md ml-2 ${
+                      activeItem === item.name
+                        ? "text-blue-500"
+                        : "hover:text-blue-500"
+                    }`}
                   >
-                    {expandedItem === item.name ? <FaChevronDown /> : <FaChevronRight />}
-                  </span>
-                )}
-              </div>
+                    {item.name}
+                  </p>
+                  {(item.name === "Books" ||
+                    item.name === "Scheme of Work" ||
+                    item.name === "Lesson Plan" ||
+                    item.name === "Notes" ||
+                    item.name === "Exams") && (
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSubmenu(item.name, e);
+                      }}
+                      className="ml-auto text-gray-500"
+                    >
+                      {expandedItem === item.name ? (
+                        <FaChevronDown />
+                      ) : (
+                        <FaChevronRight />
+                      )}
+                    </span>
+                  )}
+                </div>
 
-              {(item.name === 'Books' ||
-                item.name === 'Scheme of Work' ||
-                item.name === 'Lesson Plan' ||
-                item.name === 'Notes' ||
-                item.name === 'Exams') &&
-                expandedItem === item.name && (
-                  <div className="pl-12 py-4 space-y-4 text-md text-gray-600">
-                    <div
-                      onClick={() => handleNavigation('P6', `/books/p6`)}
-                      className={`cursor-pointer hover:text-blue-500 ${
-                        activeItem === 'P6' ? 'text-blue-500' : ''
-                      }`}
-                    >
-                      P6
-                    </div>
-                    <div
-                      onClick={() => handleNavigation('Ordinary Level', `/books/ordinary-level`)}
-                      className={`cursor-pointer hover:text-blue-500 ${
-                        activeItem === 'Ordinary Level' ? 'text-blue-500' : ''
-                      }`}
-                    >
-                      Ordinary Level
-                    </div>
-                    <div
-                      onClick={() => handleNavigation('Advanced Level', `/books/advanced-level`)}
-                      className={`cursor-pointer hover:text-blue-500 ${
-                        activeItem === 'Advanced Level' ? 'text-blue-500' : ''
-                      }`}
-                    >
-                      Advanced Level
-                    </div>
+                {expandedItem === item.name && (
+                  <div className="pl-12 py-4 space-y-4 text-sm text-gray-600">
+                    {submenuItems[item.name].map((submenuItem) => (
+                      <div
+                        key={submenuItem.name}
+                        onClick={() =>
+                          handleNavigation(submenuItem.name, submenuItem.route)
+                        } // Navigate on submenu item click
+                        className={`cursor-pointer hover:text-blue-500 ${
+                          activeItem === submenuItem.name ? "text-blue-500" : ""
+                        }`}
+                      >
+                        {submenuItem.name}
+                      </div>
+                    ))}
                   </div>
                 )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </>
