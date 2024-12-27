@@ -12,6 +12,8 @@ import Notes from './pages/notes/P6Notes';
 import P6Exams from './pages/exams/P6Exams';
 import OrdinaryExams from './pages/exams/OrdinaryExams';
 import AdvancedExams from './pages/exams/AdvancedExams';
+import P6Books from './pages/books/P6Books';
+import OrdinaryBooks from './pages/books/OrdinaryBooks';
 function App() {
   return (
     <BrowserRouter>
@@ -29,6 +31,8 @@ function App() {
           <Route path="/exams/p6" element={<P6Exams />} />
           <Route path="/exams/ordinary-level" element={<OrdinaryExams />} />
           <Route path="/exams/advanced-level" element={<AdvancedExams />} />
+          <Route path='/books/p6' element={<P6Books />} />
+          <Route path='/books/ordinary-level' element={<OrdinaryBooks/>} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
