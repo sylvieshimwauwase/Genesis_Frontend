@@ -1,7 +1,6 @@
 import React from 'react';
 import { FaSearch, FaBars } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // Import Link for routing
-import logo from '../assets/images/GenesisOfficialLogo.png';
+import { Link } from 'react-router-dom';
 
 function Header(props) {
   return (
