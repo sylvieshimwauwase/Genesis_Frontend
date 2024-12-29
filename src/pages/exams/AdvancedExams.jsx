@@ -1,78 +1,74 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import ExamTaskBar from "./EXamTaskBar";
 
 const AdvancedExams = () => {
   const navigate = useNavigate();
-  const [selectedLevel, setSelectedLevel] = useState("Advanced Level");
 
-  const levels = ["P6", "Ordinary Level", "Advanced Level"];
-
-  const examSections = {
-    "Advanced Level": [
-      {
-        title: "Senior 4 Examinations",
-        exams: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Computer Science", "Economics", "Entrepreneurship", "General studies"],
-      },
-      {
-        title: "Senior 5 Examinations",
-        exams: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Computer Science", "Economics", "Entrepreneurship", "General studies"],
-      },
-      {
-        title: "Senior 6 Examinations",
-        exams: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Computer Science", "Economics", "Entrepreneurship", "General studies"],
-      },
-    ],
-    // "Ordinary Level": [
-    //   {
-    //     title: "Senior 1",
-    //     exams: ["English", "Mathematics", "Science", "History", "Geography"],
-    //   },
-    //   {
-    //     title: "Senior 2",
-    //     exams: ["English", "Mathematics", "Science", "History", "Geography"],
-    //   },
-    // ],
-    // "P6": [
-    //   {
-    //     title: "Primary 6",
-    //     exams: ["Mathematics", "English", "Kinyarwanda", "Science", "Social Studies"],
-    //   },
-    // ],
-  };
+  const examSections = [
+    {
+      title: "Senior 4 Examinations",
+      exams: [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Geography",
+        "History",
+        "Computer Science",
+        "Economics",
+        "Entrepreneurship",
+        "General studies",
+      ],
+    },
+    {
+      title: "Senior 5 Examinations",
+      exams: [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Geography",
+        "History",
+        "Computer Science",
+        "Economics",
+        "Entrepreneurship",
+        "General studies",
+      ],
+    },
+    {
+      title: "Senior 6 Examinations",
+      exams: [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Geography",
+        "History",
+        "Computer Science",
+        "Economics",
+        "Entrepreneurship",
+        "General studies",
+      ],
+    },
+  ];
 
   const handleNavigation = (examName) => {
-    navigate(`/exams/${selectedLevel.toLowerCase().replace(" ", "-")}/${examName.toLowerCase().replace(" ", "-")}`);
-  };
-
-  const handleLevelChange = (level) => {
-    setSelectedLevel(level);
-    navigate(`/exams/${level.toLowerCase().replace(" ", "-")}`);
+    navigate(`/exams/advanced/${examName.toLowerCase().replace(" ", "-")}`);
   };
 
   return (
-    <div className="flex-grow p-6 pt-24">
-      <div className="flex justify-center gap-4 mb-6">
-        {levels.map((level) => (
-          <button
-            key={level}
-            onClick={() => handleLevelChange(level)}
-            className={`px-4 py-2 rounded-md font-semibold transition-all ${
-              selectedLevel === level
-                ? "bg-blue-600 text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white"
-            }`}
-          >
-            {level}
-          </button>
-        ))}
-      </div>
+    <div className="flex-grow p-6 pt-12">
+      <ExamTaskBar />
       <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
-        {selectedLevel} Exams
+        Advanced Level Exams
       </h1>
-      {examSections[selectedLevel].map((section, index) => (
-        <div key={index} className="mb-8 shadow-md p-6 rounded bg-gray-50">
-          <h2 className="text-xl font-bold mb-8 text-center">{section.title.toUpperCase()}</h2>
+      {examSections.map((section, index) => (
+        <div key={index} className="mb-8 shadow-lg p-6 rounded bg-white">
+          <h2 className="text-xl font-bold mt-4 mb-4 text-center">
+            {section.title.toUpperCase()}
+          </h2>
           <div className="flex flex-wrap gap-4">
             {section.exams.map((exam, idx) => (
               <div

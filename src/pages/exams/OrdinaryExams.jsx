@@ -1,23 +1,50 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 
 const OrdinaryExams = () => {
-  const navigate = useNavigate();
-
-  const levels = ["P6", "Ordinary Level", "Advanced Level"];
   const examSections = [
     {
       title: "Senior 1 Examinations",
-      exams: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Entrepreneurship", "English","Kinyarwanda"],
+      exams: [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Geography",
+        "History",
+        "Entrepreneurship",
+        "English",
+        "Kinyarwanda",
+      ],
     },
     {
       title: "Senior 2 Examinations",
-      exams: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Entrepreneurship", "English","Kinyarwanda"],
+      exams: [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Geography",
+        "History",
+        "Entrepreneurship",
+        "English",
+        "Kinyarwanda",
+      ],
     },
     {
       title: "Senior 3 Examinations",
-      exams: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Entrepreneurship", "English","Kinyarwanda"],
+      exams: [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "Geography",
+        "History",
+        "Entrepreneurship",
+        "English",
+        "Kinyarwanda",
+      ],
     },
   ];
 
@@ -27,10 +54,14 @@ const OrdinaryExams = () => {
 
   return (
     <div className="flex-grow p-6 pt-24">
-      <h1 className="bg-[#87CCEB] text-4xl font-bold text-white py-4 mt-6 text-center">Ordinary Level Exams</h1>
+      <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
+        Ordinary Level Exams
+      </h1>
       {examSections.map((section, index) => (
         <div key={index} className="mb-8 shadow-lg p-6 rounded bg-white">
-          <h2 className="text-xl font-bold mt-4 mb-4 text-center">{section.title.toUpperCase()}</h2>
+          <h2 className="text-xl font-bold mt-4 mb-4 text-center">
+            {section.title.toUpperCase()}
+          </h2>
           <div className="flex flex-wrap gap-4">
             {section.exams.map((exam, idx) => (
               <div
