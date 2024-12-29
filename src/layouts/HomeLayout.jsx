@@ -13,7 +13,7 @@ const HomeLayout = () => {
     <>
       <div className="flex">
         <SideBar isSidebarVisible={isSidebarVisible} />
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <Header toggleSidebar={toggleSidebar} />
           <Outlet />
           <Footer />
