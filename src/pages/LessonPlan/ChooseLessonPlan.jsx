@@ -31,11 +31,11 @@ const ChooseLessonPlan = () => {
         classOptions = ['Primary 6'];
         subjectOptions = ['Mathematics', 'Science', 'English'];
         break;
-      case 'o-level':
+      case 'O\'level':
         classOptions = ['Senior One', 'Senior Two', 'Senior Three'];
         subjectOptions = ['Mathematics', 'Physics', 'Chemistry'];
         break;
-      case 'a-level':
+      case 'A\'level':
         classOptions = ['Senior Four', 'Senior Five', 'Senior Six'];
         subjectOptions = ['Economics', 'Mathematics', 'Physics'];
         break;
@@ -114,14 +114,14 @@ const ChooseLessonPlan = () => {
           P6
         </button>
         <button
-          onClick={() => setActiveTab('o-level')}
-          className={`flex-1 text-center px-4 py-2 font-semibold rounded ${activeTab === 'o-level' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+          onClick={() => setActiveTab('O\'level')}
+          className={`flex-1 text-center px-4 py-2 font-semibold rounded ${activeTab === 'O\'level' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
         >
           O&apos;level
         </button>
         <button
-          onClick={() => setActiveTab('a-level')}
-          className={`flex-1 text-center px-4 py-2 font-semibold rounded ${activeTab === 'a-level' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+          onClick={() => setActiveTab('A\'level')}
+          className={`flex-1 text-center px-4 py-2 font-semibold rounded ${activeTab === 'A\'level' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
         >
           A&apos;level
         </button>
