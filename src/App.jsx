@@ -1,10 +1,8 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { ToastContainer } from 'react-toastify';
 import HomePage from './pages/HomePage';
 import AboutUs from './pages/AboutUs';
 import HomeLayout from './layouts/HomeLayout';
-import SchemeofWork from './pages/schemeofWork/P6SchemeofWork';
 import Login from './pages/Login';
 import Register from './pages/Registration';
 import Books from './pages/books/P6Books';
@@ -16,10 +14,13 @@ import AdvancedExams from './pages/exams/AdvancedExams';
 import P6Books from './pages/books/P6Books';
 import OrdinaryBooks from './pages/books/OrdinaryBooks';
 
-import AdvancedSchemeofWork from './pages/schemeofWork/AdvancedSchemeofWork';
+import SchemeOfWork from './pages/schemeofWork/SchemeOfWork.jsx';
 import AdvancedNotes from './pages/notes/AdvancedNotes';
 import OrdinaryNotes from './pages/notes/OrdinaryNotes';
 import P6Notes from './pages/notes/P6Notes';
+import SchemePage from "./pages/schemeofWork/SchemePage.jsx";
+import ChooseLessonPlan from "./pages/LessonPlan/ChooseLessonPlan.jsx";
+import LessonPlanPage from "./pages/LessonPlan/LessonPlanPage.jsx";
 
 
 function App() {
@@ -30,8 +31,6 @@ function App() {
       <Route path='/' element={<HomeLayout />} >
       <Route index element={<HomePage />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/scheme-of-work" element={<SchemeofWork />} />
-          <Route path="/lesson-plan" element={<AboutUs />} />
           <Route path="/books" element={<Books />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/exams" element={<AboutUs />} />
@@ -41,7 +40,10 @@ function App() {
           <Route path="/exams/advanced-level" element={<AdvancedExams />} />
           <Route path='/books/p6' element={<P6Books />} />
           <Route path='/books/ordinary-level' element={<OrdinaryBooks/>} />
-          <Route path="/scheme-of-work/advanced-level" element={<AdvancedSchemeofWork />}  />
+          <Route path="/scheme-of-work" element={<SchemeOfWork />}  />
+          <Route path="/scheme-of-work/:class/:subject" element={<SchemePage />} />
+          <Route path="/lesson-plan" element={<ChooseLessonPlan />}  />
+          <Route path="/lesson-plan/:class/:subject" element={<LessonPlanPage />} />
           <Route path="/Notes/p6" element={<P6Notes />} />
           <Route path="/Notes/ordinary-level" element={<OrdinaryNotes />} />
           <Route path="/notes/advanced-level" element={<AdvancedNotes />} />
