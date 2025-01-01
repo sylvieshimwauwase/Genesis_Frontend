@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 function Header(props) {
   return (
-    <header className="bg-[#333333] sticky top-0 left-0 h-20 w-full shadow-md z-50 md:block">
+    <header className="bg-[#333333] sticky top-0 left-0 min-h-20 w-full shadow-md z-50 md:block">
       <div className="flex h-full items-center justify-between max-w-7xl mx-auto px-4 py-3">
        
           <button
