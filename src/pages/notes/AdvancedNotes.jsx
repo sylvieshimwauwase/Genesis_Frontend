@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import LevelTaskBar from "../../components/LevelTaskBar";
 
 const AdvancedNotes = () => {
   const navigate = useNavigate();
@@ -51,7 +52,8 @@ const AdvancedNotes = () => {
   };
 
   return (
-    <div className="flex-grow p-6 pt-24">
+    <div className="flex-grow p-6">
+      <LevelTaskBar defaultActiveTab="Advanced Level" />
       <div className="flex justify-center gap-4 mb-6">
         {levels.map((level) => (
           <button
@@ -68,11 +70,13 @@ const AdvancedNotes = () => {
         ))}
       </div>
       <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
-        {selectedLevel} Notes 
+        {selectedLevel} Notes
       </h1>
       {examSections[selectedLevel].map((section, index) => (
         <div key={index} className="mb-8 shadow-md p-6 rounded bg-gray-50">
-          <h2 className="text-xl font-bold mb-8 text-center">{section.title.toUpperCase()}</h2>
+          <h2 className="text-xl font-bold mb-8 text-center">
+            {section.title.toUpperCase()}
+          </h2>
           <div className="flex flex-wrap gap-4">
             {section.exams.map((exam, idx) => (
               <div
