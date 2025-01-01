@@ -1,6 +1,3 @@
-
-import React from "react";
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { ToastContainer } from 'react-toastify';
 import HomePage from './pages/HomePage';
@@ -13,7 +10,7 @@ import Notes from './pages/notes/P6Notes';
 import P6Exams from './pages/exams/P6Exams';
 import OrdinaryExams from './pages/exams/OrdinaryExams';
 import AdvancedExams from './pages/exams/AdvancedExams';
-import AdvancedExamContent from './pages/exams/AdvancedExamContent';
+// import AdvancedExamContent from './pages/exams/AdvancedExamContent';
 
 import P6Books from './pages/books/P6Books';
 import OrdinaryBooks from './pages/books/OrdinaryBooks';
@@ -26,11 +23,6 @@ import SchemePage from "./pages/schemeofWork/SchemePage.jsx";
 import ChooseLessonPlan from "./pages/LessonPlan/ChooseLessonPlan.jsx";
 import LessonPlanPage from "./pages/LessonPlan/LessonPlanPage.jsx";
 
-
-import AdvancedSchemeofWork from "./pages/schemeofWork/AdvancedSchemeofWork";
-import AdvancedNotes from "./pages/notes/AdvancedNotes";
-import OrdinaryNotes from "./pages/notes/OrdinaryNotes";
-import P6Notes from "./pages/notes/P6Notes";
 import SubjectContent from "./components/subjectContent";
 import Contact from "./pages/Contact";
 
@@ -59,17 +51,13 @@ function App() {
           <Route path="/lesson-plan" element={<ChooseLessonPlan />}  />
           <Route path="/lesson-plan/:class/:subject" element={<LessonPlanPage />} />
 
-          <Route
-            path="/exams/advanced/:year"
-            element={<AdvancedExamContent />}
-          />
+          {/*<Route*/}
+          {/*  path="/exams/advanced/:year"*/}
+          {/*  element={<AdvancedExamContent />}*/}
+          {/*/>*/}
 
           <Route path="/books/p6" element={<P6Books />} />
           <Route path="/books/ordinary-level" element={<OrdinaryBooks />} />
-          <Route
-            path="/scheme-of-work/advanced-level"
-            element={<AdvancedSchemeofWork />}
-          />
 
           <Route path="/Notes/p6" element={<P6Notes />} />
           <Route path="/Notes/ordinary-level" element={<OrdinaryNotes />} />
