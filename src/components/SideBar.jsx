@@ -51,16 +51,6 @@ const SideBar = (props) => {
       { name: 'Ordinary Level Exams', route: '/exams/ordinary-level' },
       { name: 'Advanced Level Exams', route: '/exams/advanced-level' },
     ],
-    'Scheme of Work': [
-      { name: 'P6 Scheme of Work', route: '/scheme-of-work/p6' },
-      { name: 'Ordinary Level Scheme of Work', route: '/scheme-of-work/ordinary-level' },
-      { name: 'Advanced Level Scheme of Work', route: '/scheme-of-work/advanced-level' },
-    ],
-    'Lesson Plan': [
-      { name: 'P6 Lesson Plan', route: '/lesson-plan/p6' },
-      { name: 'Ordinary Level Lesson Plan', route: '/lesson-plan/ordinary-level' },
-      { name: 'Advanced Level Lesson Plan', route: '/lesson-plan/advanced-level' },
-    ],
     'Notes': [
       { name: 'P6 Notes', route: '/notes/p6' },
       { name: 'Ordinary Level Notes', route: '/notes/ordinary-level' },
@@ -94,8 +84,6 @@ const SideBar = (props) => {
                     if (
                       item.name !== "Books" &&
                       item.name !== "Exams" &&
-                      item.name !== "Scheme of Work" &&
-                      item.name !== "Lesson Plan" &&
                       item.name !== "Notes"
                     ) {
                       handleNavigation(item.name, item.route);
@@ -121,8 +109,6 @@ const SideBar = (props) => {
                     {item.name}
                   </p>
                   {(item.name === "Books" ||
-                    item.name === "Scheme of Work" ||
-                    item.name === "Lesson Plan" ||
                     item.name === "Notes" ||
                     item.name === "Exams") && (
                     <span
@@ -150,7 +136,7 @@ const SideBar = (props) => {
                           handleNavigation(submenuItem.name, submenuItem.route)
                         } // Navigate on submenu item click
                         className={`cursor-pointer hover:text-blue-500 ${
-                          activeItem === submenuItem.name ? "text-blue-500" : ""
+                          activeItem === submenuItem.name ? "text-blue-500 bg-yellow-200" : ""
                         }`}
                       >
                         {submenuItem.name}
