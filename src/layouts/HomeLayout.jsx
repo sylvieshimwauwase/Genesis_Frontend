@@ -13,9 +13,10 @@ const HomeLayout = () => {
     <>
       <div className="flex">
         <SideBar isSidebarVisible={isSidebarVisible} />
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full min-h-screen">
           <Header toggleSidebar={toggleSidebar} />
           <Outlet />
+          <div className="h-full"></div>
           <Footer />
         </div>
       </div>
