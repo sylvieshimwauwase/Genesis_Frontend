@@ -1,21 +1,5 @@
 
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import { ToastContainer } from 'react-toastify';
-import HomePage from "./pages/HomePage";
-import AboutUs from "./pages/AboutUs";
-import HomeLayout from "./layouts/HomeLayout";
-import SchemeofWork from "./pages/schemeofWork/P6SchemeofWork";
-import Login from "./pages/Login";
-import Register from "./pages/Registration";
-import Books from "./pages/books/P6Books";
-import Notes from "./pages/notes/P6Notes";
-import P6Exams from "./pages/exams/P6Exams";
-import OrdinaryExams from "./pages/exams/OrdinaryExams";
-import AdvancedExams from "./pages/exams/AdvancedExams";
-
-import P6Books from "./pages/books/P6Books";
-import OrdinaryBooks from "./pages/books/OrdinaryBooks";
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { ToastContainer } from 'react-toastify';
