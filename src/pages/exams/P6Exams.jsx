@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
-import ExamTaskBar from "./ExamTaskBar";
+import LevelTaskBar from "../../components/LevelTaskBar";
 
 const P6Exams = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const P6Exams = () => {
   const getYears = () => {
     const currentYear = new Date().getFullYear();
     const years = [];
-    for (let year = 2020; year <= currentYear; year++) {
+    for (let year = 2020; year < currentYear; year++) {
       years.push(year);
     }
     return years;
@@ -37,14 +37,21 @@ const P6Exams = () => {
 
   const handleYearSelection = (year) => {
     setShowYearSelector(false);
-    navigate(
-      `/exams/p6/${selectedExam.toLowerCase().replace(" ", "-")}/${year}`
-    );
+    navigate("/subject-content", {
+      state: {
+        lessonName: selectedExam,
+        year,
+        content: `This is the content for ${selectedExam} in ${year}.`,
+        pdfUrl: `/pdfs/p6/${selectedExam
+          .toLowerCase()
+          .replace(" ", "-")}-${year}.pdf`,
+      },
+    });
   };
 
   return (
     <div className="flex-grow p-6">
-      <ExamTaskBar defaultActiveTab="P6" />
+      <LevelTaskBar defaultActiveTab="P6" />
       <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
         P6 Exams
       </h1>
@@ -57,7 +64,7 @@ const P6Exams = () => {
             {section.exams.map((exam, idx) => (
               <div
                 key={idx}
-                onClick={() => handleExamClick(`${section.title} ${exam}`)}
+                onClick={() => handleExamClick(exam)}
                 className="shadow-md hover:shadow-lg transition-shadow rounded"
               >
                 <Button label={exam.toUpperCase()} />

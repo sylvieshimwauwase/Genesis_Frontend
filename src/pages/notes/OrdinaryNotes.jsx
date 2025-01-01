@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import LevelTaskBar from "../../components/LevelTaskBar";
 
 const OrdinaryNotes = () => {
   const navigate = useNavigate();
@@ -26,11 +27,16 @@ const OrdinaryNotes = () => {
   };
 
   return (
-    <div className="flex-grow p-6 pt-24">
-      <h1 className="bg-[#87CCEB] text-4xl font-bold text-white py-4 mt-6 text-center">Ordinary Level Notes</h1>
+    <div className="flex-grow p-6">
+      <LevelTaskBar defaultActiveTab="Ordinary Level" />
+      <h1 className="bg-[#87CCEB] text-4xl font-bold text-white py-4 mt-6 text-center">
+        Ordinary Level Notes
+      </h1>
       {examSections.map((section, index) => (
         <div key={index} className="mb-8 shadow-lg p-6 rounded bg-white">
-          <h2 className="text-xl font-bold mt-4 mb-4 text-center">{section.title.toUpperCase()}</h2>
+          <h2 className="text-xl font-bold mt-4 mb-4 text-center">
+            {section.title.toUpperCase()}
+          </h2>
           <div className="flex flex-wrap gap-4">
             {section.exams.map((exam, idx) => (
               <div
