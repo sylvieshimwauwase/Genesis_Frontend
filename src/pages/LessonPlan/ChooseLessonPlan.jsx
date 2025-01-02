@@ -104,24 +104,24 @@ const ChooseLessonPlan = () => {
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Choose Lesson Plan for Secondary Teachers</h1>
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Choose Lesson Plan for {activeTab} Teachers</h1>
 
-      <div className="flex space-x-4 mb-8 max-w-2xl w-full">
+      <div className="flex mb-8 max-w-2xl w-full shadow-md">
         <button
-          onClick={() => setActiveTab('P6')}
-          className={`flex-1 text-center px-4 py-2 font-semibold rounded ${activeTab === 'P6' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+            onClick={() => setActiveTab('P6')}
+            className={`flex-1 text-center px-4 py-2 font-semibold ${activeTab === 'P6' ? 'bg-[#4175B7] border-[1px] border-[#4175B7] text-white' : 'bg-white border-[1px] border-gray-200 text-gray-700 hover:bg-gray-300'}`}
         >
           P6
         </button>
         <button
-          onClick={() => setActiveTab('O\'level')}
-          className={`flex-1 text-center px-4 py-2 font-semibold rounded ${activeTab === 'O\'level' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+            onClick={() => setActiveTab('O\'level')}
+            className={`flex-1 text-center px-4 py-2 font-semibold ${activeTab === 'O\'level' ? 'bg-[#4175B7] border-[1px] border-[#4175B7] text-white' : 'bg-white border-[1px] border-gray-200 text-gray-700 hover:bg-gray-300'}`}
         >
           O&apos;level
         </button>
         <button
-          onClick={() => setActiveTab('A\'level')}
-          className={`flex-1 text-center px-4 py-2 font-semibold rounded ${activeTab === 'A\'level' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+            onClick={() => setActiveTab('A\'level')}
+            className={`flex-1 text-center px-4 py-2 font-semibold ${activeTab === 'A\'level' ? 'bg-[#4175B7] border-[1px] border-[#4175B7] text-white' : 'bg-white border-[1px] border-gray-200 text-gray-700 hover:bg-gray-300'}`}
         >
           A&apos;level
         </button>
