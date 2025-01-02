@@ -11,20 +11,20 @@ const LevelTaskBar = ({ defaultActiveTab, section }) => {
       case "books":
         return [
           { label: "P6", route: "/books/p6" },
-          { label: "Ordinary Level", route: "/books/ordinary-level" },
-          { label: "Advanced Level", route: "/books/advanced-level" },
+          { label: "O'\Level", route: "/books/ordinary-level" },
+          { label: "A'\Level", route: "/books/advanced-level" },
         ];
       case "notes":
         return [
           { label: "P6", route: "/notes/p6" },
-          { label: "Ordinary Level", route: "/notes/ordinary-level" },
-          { label: "Advanced Level", route: "/notes/advanced-level" },
+          { label: "O'\Level", route: "/notes/ordinary-level" },
+          { label: "A'\Level", route: "/notes/advanced-level" },
         ];
       default:
         return [
           { label: "P6", route: "/exams/p6" },
-          { label: "Ordinary Level", route: "/exams/ordinary-level" },
-          { label: "Advanced Level", route: "/exams/advanced-level" },
+          { label: "O'\Level", route: "/exams/ordinary-level" },
+          { label: "A'\Level", route: "/exams/advanced-level" },
         ];
     }
   };
@@ -45,16 +45,16 @@ const LevelTaskBar = ({ defaultActiveTab, section }) => {
 
   return (
     <div className="flex justify-center items-center mt-6">
-      <div className="border border-gray-300 rounded-sm overflow-hidden shadow-md">
-        <div className="flex">
+      <div className="rounded-sm mb-8 max-w-2xl w-full">
+        <div className="flex space-x-4">
           {tabs.map((tab) => (
             <button
               key={tab.label}
               onClick={() => handleTabClick(tab)}
-              className={`px-6 py-3 text-sm font-medium border-r last:border-r-0 ${
+              className={`flex-1 text-center px-4 py-2 font-semibold rounded ${
                 activeTab === tab.label
-                  ? "bg-white text-black border-blue-500"
-                  : "bg-[#4175B7] text-white border-gray-300"
+                  ? "bg-[#4175B7] text-white border-gray-300"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
               style={{
                 transition: "background-color 0.3s, color 0.3s",

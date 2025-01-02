@@ -57,9 +57,9 @@ const P6Exams = () => {
       </h1>
       {examSections.map((section, index) => (
         <div key={index} className="mb-8 shadow-lg p-6 rounded bg-white">
-          <h2 className="text-xl font-bold mt-4 mb-4 text-center">
+          {/* <h2 className="text-xl font-bold mt-4 mb-4 text-center">
             {section.title.toUpperCase()}
-          </h2>
+          </h2> */}
           <div className="flex flex-wrap gap-4">
             {section.exams.map((exam, idx) => (
               <div

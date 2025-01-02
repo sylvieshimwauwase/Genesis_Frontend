@@ -25,9 +25,9 @@ const P6Books = () => {
       </h1>
       {bookSections.map((section, index) => (
         <div key={index} className="mb-8">
-          <h2 className="text-xl font-bold mb-4 text-center">
+          {/* <h2 className="text-xl font-bold mb-4 text-center">
             {section.title}
-          </h2>
+          </h2> */}
           <div className="flex flex-wrap gap-4">
             {section.books.map((book, idx) => (
               <div
