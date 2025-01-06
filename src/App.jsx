@@ -15,24 +15,15 @@ import AdvancedExams from "./pages/exams/AdvancedExams";
 
 import P6Books from "./pages/books/P6Books";
 import OrdinaryBooks from "./pages/books/OrdinaryBooks";
-// import AdvancedExamContent from './pages/exams/AdvancedExamContent';
 
-// import P6Books from './pages/books/P6Books';
-// import OrdinaryBooks from './pages/books/OrdinaryBooks';
-
- import SchemeOfWork from './pages/schemeofWork/SchemeOfWork.jsx';
-import AdvancedNotes from './pages/notes/AdvancedNotes';
-import OrdinaryNotes from './pages/notes/OrdinaryNotes';
-import P6Notes from './pages/notes/P6Notes';
+import SchemeOfWork from "./pages/schemeofWork/SchemeOfWork.jsx";
+import AdvancedNotes from "./pages/notes/AdvancedNotes";
+import OrdinaryNotes from "./pages/notes/OrdinaryNotes";
+import P6Notes from "./pages/notes/P6Notes";
 import SchemePage from "./pages/schemeofWork/SchemePage.jsx";
 import ChooseLessonPlan from "./pages/LessonPlan/ChooseLessonPlan.jsx";
 import LessonPlanPage from "./pages/LessonPlan/LessonPlanPage.jsx";
 
-
-// import AdvancedSchemeofWork from "./pages/schemeofWork/AdvancedSchemeofWork";
-// import AdvancedNotes from "./pages/notes/AdvancedNotes";
-// import OrdinaryNotes from "./pages/notes/OrdinaryNotes";
-// import P6Notes from "./pages/notes/P6Notes";
 import Contact from "./pages/Contact";
 import ExamSubjectContent from "./pages/exams/ExamSubjectContent.jsx";
 
@@ -51,27 +42,28 @@ function App() {
           <Route path="/exams/ordinary-level" element={<OrdinaryExams />} />
           <Route path="/exams/advanced-level" element={<AdvancedExams />} />
 
-
           <Route path="/subject-content" element={<ExamSubjectContent />} />
-
-          <Route path='/books/p6' element={<P6Books />} />
-          <Route path='/books/ordinary-level' element={<OrdinaryBooks/>} />
-          <Route path="/scheme-of-work" element={<SchemeOfWork />}  />
-          <Route path="/scheme-of-work/:class/:subject" element={<SchemePage />} />
-          <Route path="/lesson-plan" element={<ChooseLessonPlan />}  />
-          <Route path="/lesson-plan/:class/:subject" element={<LessonPlanPage />} />
-
-          {/* <Route
-            path="/exams/advanced/:year"
-            element={<AdvancedExamContent />}
-          /> */}
 
           <Route path="/books/p6" element={<P6Books />} />
           <Route path="/books/ordinary-level" element={<OrdinaryBooks />} />
-          {/* <Route
-            path="/scheme-of-work/advanced-level"
-            element={<AdvancedSchemeofWork />}
-          /> */}
+          <Route path="/scheme-of-work" element={<SchemeOfWork />} />
+          <Route
+            path="/scheme-of-work/:class/:subject"
+            element={<SchemePage />}
+          />
+          <Route path="/lesson-plan" element={<ChooseLessonPlan />} />
+          <Route
+            path="/lesson-plan/:class/:subject"
+            element={<LessonPlanPage />}
+          />
+
+          {/*<Route*/}
+          {/*  path="/exams/advanced/:year"*/}
+          {/*  element={<AdvancedExamContent />}*/}
+          {/*/>*/}
+
+          <Route path="/books/p6" element={<P6Books />} />
+          <Route path="/books/ordinary-level" element={<OrdinaryBooks />} />
 
           <Route path="/Notes/p6" element={<P6Notes />} />
           <Route path="/Notes/ordinary-level" element={<OrdinaryNotes />} />

@@ -1,11 +1,11 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import Footer from "../components/Footer";
+import {useState} from "react";
 
 const HomeLayout = () => {
-  const [isSidebarVisible, setIsSidebarVisible] = React.useState(true);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const toggleSidebar = () => {
     setIsSidebarVisible((prev) => !prev);
   };
