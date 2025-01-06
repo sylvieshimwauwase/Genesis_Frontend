@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
-import LevelTaskBar from "../../components/LevelTaskBar";
+import LevelTask from "../../components/LevelTaskBar";
 
 const OrdinaryExams = () => {
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ const OrdinaryExams = () => {
 
   return (
     <div className="flex-grow p-6">
-      <LevelTaskBar defaultActiveTab="Ordinary Level" />
+      <LevelTask defaultActiveTab="Ordinary Level" />
       <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
         Ordinary Level Exams
       </h1>

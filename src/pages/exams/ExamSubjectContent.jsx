@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-const SubjectContent = () => {
+const ExamSubjectContent = () => {
   const location = useLocation();
   const { lessonName, year, content, pdfUrl } = location.state || {};
 
@@ -31,4 +31,4 @@ const SubjectContent = () => {
   );
 };
 
-export default SubjectContent;
+export default ExamSubjectContent;
