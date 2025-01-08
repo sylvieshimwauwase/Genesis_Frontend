@@ -53,7 +53,7 @@ const P6Exams = () => {
     <div className="flex-grow p-6">
       <LevelTaskBar defaultActiveTab="P6" />
       <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
-        P6 Examscd
+        P6 Exams
       </h1>
       {examSections.map((section, index) => (
         <div key={index} className="mb-8 shadow-lg p-6 rounded bg-white">

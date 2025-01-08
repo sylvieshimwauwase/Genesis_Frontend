@@ -22,9 +22,9 @@ const LevelTaskBar = ({ defaultActiveTab, section }) => {
         ];
       default:
         return [
-          { label: "P6", route: "/exams/p6" },
-          { label: "O'\Level", route: "/exams/ordinary-level" },
-          { label: "A'\Level", route: "/exams/advanced-level" },
+          { label: "P6", route: "/exams-container" },
+          { label: "O'Level", route: "/exams-container" },
+          { label: "A'Level", route: "/exams-container" },
         ];
     }
   };
