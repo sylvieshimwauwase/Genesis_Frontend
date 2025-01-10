@@ -13,10 +13,13 @@ import SchemePage from "./pages/schemeofWork/SchemePage.jsx";
 import ChooseLessonPlan from "./pages/LessonPlan/ChooseLessonPlan.jsx";
 import LessonPlanPage from "./pages/LessonPlan/LessonPlanPage.jsx";
 import Contact from "./pages/Contact";
-import ExamSubjectContent from "./pages/exams/ExamSubjectContent.jsx";
+import ExamPage from "./pages/exams/ExamPage.jsx";
 import Exams from "./pages/exams/Exams";
 
 import Notes from "./pages/notes/Notes";
+import NotesPage from "./pages/notes/NotesPage.jsx";
+import BooksPage from "./pages/books/BooksPage.jsx";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -26,12 +29,14 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/books" element={<Books />} />
+          <Route path="/books-content" element={<BooksPage />} />
           <Route path="/notes" element={<Notes />} />
+          <Route path="/notes-content" element={<NotesPage />} />
           <Route path="/works" element={<AboutUs />} />
           <Route path="/exams" element={<Exams />} />
           <Route
-            path="/subject-content"
-            element={<ExamSubjectContent />}
+            path="/exam-content"
+            element={<ExamPage />}
           />
           <Route path="/scheme-of-work" element={<SchemeOfWork />} />
           <Route
@@ -47,6 +52,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>

@@ -2,24 +2,21 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');  // Add state for first name
-  const [lastName, setLastName] = useState('');    // Add state for last name
-  const [identifier, setIdentifier] = useState(''); // Holds email or phone number
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Regex for validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation
-  const phoneRegex = /^[0-9]{10}$/; // Validate phone number with exactly 10 digits
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^[0-9]{10}$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/; // Password validation
 
-  // Handle registration form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate identifier (email or phone)
     if (!identifier) {
       setError('Please provide an email or phone number.');
       return;
@@ -29,7 +26,7 @@ const Register = () => {
       return;
     }
 
-    // Validate password
+   
     if (!passwordRegex.test(password)) {
       setError('Password must be at least 8 characters long and include letters, numbers, and symbols.');
       return;
@@ -54,7 +51,7 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-sm mx-auto p-4 bg-white shadow-lg rounded-md mt-16">
+    <div className="max-w-sm mx-auto p-4 bg-white shadow-lg rounded-md mt-10">
       <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
       {error && <p className="text-red-600 text-center mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
