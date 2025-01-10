@@ -2,7 +2,7 @@
 import { FaInstagram, FaTwitter, FaLinkedinIn} from 'react-icons/fa';
 
 function Footer() {
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear() - 1;
 
   return (
     <footer className="bg-[#133459] text-white left-0 w-full">
