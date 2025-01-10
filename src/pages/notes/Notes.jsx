@@ -2,6 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import axios from "axios";
+import apiService from '../../constants/data.js';
+
+const fetchLevels = async () => {
+  try {
+    const levels = await apiService.getAll('levels');
+    console.log(levels);
+  } catch (error) {
+    console.error('Error fetching levels:', error);
+  }
+};
+
+fetchLevels();
 
 const Notes = () => {
   const navigate = useNavigate();
