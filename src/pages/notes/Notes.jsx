@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import axios from "axios";
 
 const Notes = () => {
   const navigate = useNavigate();
-  const [selectedNote, setSelectedNote] = useState(null);
-  const [showYearSelector, setShowYearSelector] = useState(false);
   const [currentLevel, setCurrentLevel] = useState("P6"); // Default level is P6
-  const [currentSubLevel, setCurrentSubLevel] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/api/notes/${currentLevel}`)
+      .then((response) => setCurrentNotes(response.data))
+      .catch((error) => console.error(error));
+  }, [currentLevel]);
 
   const levels = {
     P6: {
@@ -21,7 +26,7 @@ const Notes = () => {
       ],
       pdfPath: "p6",
     },
-    Ordinary: {
+    "O'Level": {
       title: "Ordinary Level Notes",
       subLevels: ["Senior 1", "Senior 2", "Senior 3"],
       notes: [
@@ -37,7 +42,7 @@ const Notes = () => {
       ],
       pdfPath: "ordinary",
     },
-    Advanced: {
+    "A'Level": {
       title: "Advanced Level Notes",
       subLevels: ["Senior 4", "Senior 5", "Senior 6"],
       notes: [
@@ -56,48 +61,34 @@ const Notes = () => {
     },
   };
 
-  const getYears = () => {
-    const currentYear = new Date().getFullYear();
-    return Array.from({ length: currentYear - 2020 }, (_, i) => 2020 + i);
-  };
-
-  const handleNoteClick = (noteName) => {
-    setSelectedNote(noteName);
-    setShowYearSelector(true);
-  };
-
-  const handleYearSelection = (year) => {
-    setShowYearSelector(false);
-    navigate("/subject-content", {
+  const handleNoteClick = (subject) => {
+    navigate("/notes-content", {
       state: {
-        lessonName: selectedNote,
-        year,
-        content: `This is the content for ${selectedNote} in ${year}.`,
-        pdfUrl: `/pdfs/${levels[currentLevel].pdfPath}/${selectedNote
-          .toLowerCase()
-          .replace(" ", "-")}-${year}.pdf`,
+        lessonName: subject,
+        content: `This is the content for ${subject}.`,
+        pdfUrl: `/pdfs/notes/${subject.toLowerCase().replace(" ", "-")}.pdf`,
+        videoUrl: `https://www.youtube.com/embed/exampleVideoID`,
       },
     });
   };
 
   const handleLevelChange = (level) => {
     setCurrentLevel(level);
-    setCurrentSubLevel(null);
   };
 
   return (
-    <div className="flex-grow p-6">
+    <div className="flex-grow p-6 bg-gray-100">
       <div className="flex justify-center items-center mt-6">
         <div className="rounded-sm mb-8 max-w-2xl w-full">
-          <div className="flex space-x-4">
-            {["P6", "Ordinary", "Advanced"].map((level) => (
+          <div className="flex mb-8 max-w-2xl w-full shadow-md">
+            {["P6", "O'Level", "A'Level"].map((level) => (
               <button
                 key={level}
                 onClick={() => handleLevelChange(level)}
-                className={`flex-1 text-center px-4 py-2 font-semibold rounded ${
+                className={`flex-1 text-center px-4 py-2 font-semibold ${
                   currentLevel === level
-                    ? "bg-[#4175B7] text-white border-gray-300"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    ? "bg-[#4175B7] border-[1px] border-[#4175B7] text-white"
+                    : "bg-white border-[1px] border-gray-200 text-gray-700 hover:bg-gray-300'}"
                 }`}
                 style={{
                   transition: "background-color 0.3s, color 0.3s",
@@ -149,33 +140,6 @@ const Notes = () => {
                 <Button label={note.toUpperCase()} />
               </div>
             ))}
-          </div>
-        </div>
-      )}
-
-      {showYearSelector && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-            <h2 className="text-lg font-bold mb-4">Select Year</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {getYears().map((year) => (
-                <button
-                  key={year}
-                  onClick={() => handleYearSelection(year)}
-                  className="bg-[#4175B7] text-white py-2 px-4 rounded hover:bg-blue-700"
-                >
-                  {year}
-                </button>
-              ))}
-            </div>
-            <div className="mt-4 text-right">
-              <button
-                onClick={() => setShowYearSelector(false)}
-                className="text-gray-500 hover:text-black"
-              >
-                Cancel
-              </button>
-            </div>
           </div>
         </div>
       )}

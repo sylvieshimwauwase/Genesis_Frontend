@@ -1,22 +1,34 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 import Footer from "../components/Footer";
-import {useState} from "react";
+import Header from "../components/Header";
+import AuthHeader from "../components/AuthHeader";
+import { useState } from "react";
 
 const HomeLayout = () => {
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(
+    window.innerWidth >= 768
+  );
+
   const toggleSidebar = () => {
     setIsSidebarVisible((prev) => !prev);
   };
+  
+
   return (
     <>
       <div className="flex">
-        <SideBar isSidebarVisible={isSidebarVisible} />
-        <div className="flex flex-col w-full min-h-screen">
-          <Header toggleSidebar={toggleSidebar} />
+        <SideBar
+          isSidebarVisible={isSidebarVisible}
+          toggleSidebar={toggleSidebar}
+        />
+        <div
+          className={`flex flex-col w-full min-h-screen md:ml-72 ${
+            isSidebarVisible ? "md:ml-72" : "md:ml-0"
+          }`}
+        >
+          <AuthHeader toggleSidebar={toggleSidebar} />
           <Outlet />
-          <div className="h-full"></div>
           <Footer />
         </div>
       </div>

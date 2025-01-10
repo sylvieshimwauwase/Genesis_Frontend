@@ -21,7 +21,7 @@ const Exams = () => {
       ],
       pdfPath: "p6",
     },
-    Ordinary: {
+    "O'Level": {
       title: "Ordinary Level Exams",
       subLevels: ["Senior 1", "Senior 2", "Senior 3"],
       exams: [
@@ -37,7 +37,7 @@ const Exams = () => {
       ],
       pdfPath: "ordinary",
     },
-    Advanced: {
+    "A'Level": {
       title: "Advanced Level Exams",
       subLevels: ["Senior 4", "Senior 5", "Senior 6"],
       exams: [
@@ -68,7 +68,7 @@ const Exams = () => {
 
   const handleYearSelection = (year) => {
     setShowYearSelector(false);
-    navigate("/subject-content", {
+    navigate("/exam-content", {
       state: {
         lessonName: selectedExam,
         year,
@@ -90,18 +90,18 @@ const Exams = () => {
   };
 
   return (
-    <div className="flex-grow p-6">
+    <div className="flex-grow p-6  bg-gray-100">
       <div className="flex justify-center items-center mt-6">
         <div className="rounded-sm mb-8 max-w-2xl w-full">
-          <div className="flex space-x-4">
-            {["P6", "Ordinary", "Advanced"].map((level) => (
+          <div className="flex mb-8 max-w-2xl w-full shadow-md">
+            {["P6", "O'Level", "A'Level"].map((level) => (
               <button
                 key={level}
                 onClick={() => handleLevelChange(level)}
-                className={`flex-1 text-center px-4 py-2 font-semibold rounded ${
+                className={`flex-1 text-center px-4 py-2 font-semibold ${
                   currentLevel === level
-                    ? "bg-[#4175B7] text-white border-gray-300"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    ? "bg-[#4175B7] border-[1px] border-[#4175B7] text-white"
+                    : "bg-white border-[1px] border-gray-200 text-gray-700 hover:bg-gray-300'}"
                 }`}
                 style={{
                   transition: "background-color 0.3s, color 0.3s",

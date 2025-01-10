@@ -10,12 +10,12 @@ function Login() {
 
   // Validation functions
   const isValidEmailOrPhone = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Email validation
-    const phoneRegex = /^\d{10}$/; // 10-digit phone number
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
     return emailRegex.test(value) || phoneRegex.test(value);
   };
 
-  const isValidPassword = (password) => password.length >= 6; // Minimum 6 characters
+  const isValidPassword = (password) => password.length >= 6;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,7 +60,7 @@ function Login() {
     setTimeout(() => {
       setLoading(false);
 
-      // Simulate successful login (replace with actual authentication logic)
+      // Simulate successful login
       const isAuthenticated = true;
 
       if (isAuthenticated) {
@@ -68,8 +68,11 @@ function Login() {
         setEmailOrPhone("");
         setPassword("");
 
-        // Store session
-        localStorage.setItem("userSession", JSON.stringify({ emailOrPhone }));
+        // Store session in localStorage
+        localStorage.setItem(
+          "userSession",
+          JSON.stringify({ emailOrPhone, isAuthenticated: true })
+        );
 
         // Navigate to dashboard
         navigate("/dashboard");
@@ -79,11 +82,11 @@ function Login() {
           emailOrPhone: "Invalid credentials. Please try again.",
         }));
       }
-    }, 2000); // Simulate network delay
+    }, 2000);
   };
 
   return (
-    <div className="max-w-sm mx-auto p-4 bg-white shadow-lg rounded-md mt-16">
+    <div className="max-w-sm mx-auto p-4 bg-white shadow-lg rounded-md mt-32">
       <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email/Phone Field */}
@@ -130,6 +133,7 @@ function Login() {
           {error.password && (
             <p className="text-red-500 text-sm mt-1">{error.password}</p>
           )}
+
           {/* Forgot Password */}
           <div className="mt-2 text-right">
             <a

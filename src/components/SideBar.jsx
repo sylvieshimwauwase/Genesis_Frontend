@@ -35,53 +35,54 @@ const SideBar = (props) => {
   const handleNavigation = (itemName, route) => {
     setActiveItem(itemName);
     navigate(route);
+    props.toggleSidebar();
   };
 
   return (
-    <>
-      {props.isSidebarVisible && (
-        <div className="w-72 h-screen sticky top-0 bg-white text-black flex flex-col shadow-lg transition-transform duration-300">
-          <div className="flex min-h-20 justify-center space-x-6 items-center bg-[#333333]">
-            <img
-              src={logo}
-              alt="Logo"
-              className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10"
-            />
-            <div>
-              <h2 className="text-white font-bold text-xl tracking-widest">
-                GENESIS
-              </h2>
-              <p className="text-white text-xs"> E-Learning</p>
-            </div>
-          </div>
-          <div className="overflow-y-scroll">
-            {menuItems.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => handleNavigation(item.name, item.route)}
-                className={`px-6 py-4 flex items-center cursor-pointer border-b border-gray-300
-                  ${
-                    activeItem === item.name
-                      ? "text-blue-500 border-blue-500"
-                      : "hover:text-blue-500"
-                  }`}
-              >
-                <span className="text-green-300">{item.icon}</span>
-                <p
-                  className={`text-md font-md ml-2 ${
-                    activeItem === item.name
-                      ? "text-blue-500"
-                      : "hover:text-blue-500"
-                  }`}
-                >
-                  {item.name}
-                </p>
-              </div>
-            ))}
-          </div>
+    <div
+      className={`fixed top-0 left-0 h-screen w-72 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50
+        ${props.isSidebarVisible ? "translate-x-0" : "-translate-x-full"} 
+        `}
+    >
+      <div className="flex min-h-20 justify-center space-x-6 items-center bg-[#333333]">
+        <img
+          src={logo}
+          alt="Logo"
+          className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10"
+        />
+        <div>
+          <h2 className="text-white font-bold text-xl tracking-widest">
+            GENESIS
+          </h2>
+          <p className="text-white text-xs"> E-Learning</p>
         </div>
-      )}
-    </>
+      </div>
+      <div className="overflow-y-scroll">
+        {menuItems.map((item) => (
+          <div
+            key={item.id}
+            onClick={() => handleNavigation(item.name, item.route)}
+            className={`px-6 py-4 flex items-center cursor-pointer border-b border-gray-300
+              ${
+                activeItem === item.name
+                  ? "text-blue-500 border-blue-500"
+                  : "hover:text-blue-500"
+              }`}
+          >
+            <span className="text-green-300">{item.icon}</span>
+            <p
+              className={`text-md font-md ml-2 ${
+                activeItem === item.name
+                  ? "text-blue-500"
+                  : "hover:text-blue-500"
+              }`}
+            >
+              {item.name}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

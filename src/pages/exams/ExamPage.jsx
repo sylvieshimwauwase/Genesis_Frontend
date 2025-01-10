@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
+import DownloadButton from "../../components/DownloadButton";
 
-const ExamSubjectContent = () => {
+const ExamPage = () => {
   const location = useLocation();
   const { lessonName, year, content, pdfUrl } = location.state || {};
 
@@ -15,20 +16,10 @@ const ExamSubjectContent = () => {
         <p className="text-lg leading-7 text-gray-800">{content}</p>
 
         {/* Download Button */}
-        {pdfUrl && (
-          <div className="mt-6 text-center">
-            <a
-              href={pdfUrl}
-              download
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-            >
-              Download PDF
-            </a>
-          </div>
-        )}
+        <DownloadButton pdfUrl={pdfUrl} />
       </div>
     </div>
   );
 };
 
-export default ExamSubjectContent;
+export default ExamPage;
