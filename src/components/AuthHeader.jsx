@@ -2,6 +2,7 @@ import { FaSearch, FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import  avatar  from "../assets/images/avatar.png";
 
 function AuthHeader({ toggleSidebar, user }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -80,40 +81,47 @@ function AuthHeader({ toggleSidebar, user }) {
             </button>
           </form>
 
-          {user ? (
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={toggleDropdown}
-                className="flex items-center space-x-2 text-white"
-              >
-                <img
-                  src={`https://api.example.com/avatar/${
-                    user.email || "default-avatar"
-                  }`}
-                  alt={`${user.name || "User"}'s avatar`}
-                  className="h-8 w-8 rounded-full"
-                />
-                <span className="text-sm">{user.name || "User"}</span>
-              </button>
+          {/* {user ? ( */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={toggleDropdown}
+              className="flex items-center space-x-2 text-white mr-8"
+            >
+              <img
+                // src={`https://api.example.com/avatar/${
+                //   user.email || "default-avatar"
+                // }`}
+                src={
+                  user?.email
+                    ? `https://api.example.com/avatar/${user.email}`
+                    : avatar
+                }
+                // alt={`${user.name || "User"}'s avatar`}
+                alt={`${user?.name || "User"}'s avatar`}
+                className="h-8 w-8 rounded-full"
+              />
+              {/* <span className="text-sm">{user.name || "User"}</span> */}
+              <span className="text-sm">{user?.name || "User"}</span>
+            </button>
 
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                  <Link
-                    to="/profile"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Profile
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+          {/* ) : (
             <p className="text-white text-sm">
               You are currently using guest access (
               <Link to="/login" className="text-blue-400 hover:underline">
@@ -121,7 +129,7 @@ function AuthHeader({ toggleSidebar, user }) {
               </Link>
               )
             </p>
-          )}
+          )} */}
         </div>
       </div>
     </header>
