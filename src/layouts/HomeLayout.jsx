@@ -23,7 +23,7 @@ const HomeLayout = () => {
           toggleSidebar={toggleSidebar}
         />
         <div
-          className={`flex flex-col w-full min-h-screen md:ml-72 ${
+          className={`flex flex-col w-full min-h-screen ${
             isSidebarVisible ? "md:ml-72" : "md:ml-0"
           }`}
         >
