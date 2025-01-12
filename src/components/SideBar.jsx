@@ -12,18 +12,13 @@ import {
   FaDownload,
 } from "react-icons/fa";
 
-const SideBar = (props) => {
+const SideBar = ({ isSidebarVisible, toggleSidebar }) => {
   const [activeItem, setActiveItem] = useState("");
   const navigate = useNavigate();
 
   const menuItems = [
     { id: 1, name: "About Us", icon: <FaInfoCircle />, route: "/about-us" },
-    {
-      id: 2,
-      name: "Scheme of Work",
-      icon: <FaClipboardList />,
-      route: "/scheme-of-work",
-    },
+    { id: 2, name: "Scheme of Work", icon: <FaClipboardList />, route: "/scheme-of-work" },
     { id: 3, name: "Lesson Plan", icon: <FaPenAlt />, route: "/lesson-plan" },
     { id: 4, name: "Books", icon: <FaBook />, route: "/books" },
     { id: 5, name: "Notes", icon: <FaRegFileAlt />, route: "/notes" },
@@ -35,25 +30,21 @@ const SideBar = (props) => {
   const handleNavigation = (itemName, route) => {
     setActiveItem(itemName);
     navigate(route);
-    props.toggleSidebar();
+    if (window.innerWidth < 768) {
+      toggleSidebar();
+    }
   };
 
   return (
     <div
       className={`fixed top-0 left-0 h-screen w-72 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50
-        ${props.isSidebarVisible ? "translate-x-0" : "-translate-x-full"} 
-        `}
+        ${isSidebarVisible ? "translate-x-0" : "-translate-x-full"}
+      `}
     >
       <div className="flex min-h-20 justify-center space-x-6 items-center bg-[#333333]">
-        <img
-          src={logo}
-          alt="Logo"
-          className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10"
-        />
+        <img src={logo} alt="Logo" className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10" />
         <div>
-          <h2 className="text-white font-bold text-xl tracking-widest">
-            GENESIS
-          </h2>
+          <h2 className="text-white font-bold text-xl tracking-widest">GENESIS</h2>
           <p className="text-white text-xs"> E-Learning</p>
         </div>
       </div>
@@ -63,18 +54,13 @@ const SideBar = (props) => {
             key={item.id}
             onClick={() => handleNavigation(item.name, item.route)}
             className={`px-6 py-4 flex items-center cursor-pointer border-b border-gray-300
-              ${
-                activeItem === item.name
-                  ? "text-blue-500 border-blue-500"
-                  : "hover:text-blue-500"
-              }`}
+              ${activeItem === item.name ? "text-blue-500 border-blue-500" : "hover:text-blue-500"}
+            `}
           >
             <span className="text-green-300">{item.icon}</span>
             <p
               className={`text-md font-md ml-2 ${
-                activeItem === item.name
-                  ? "text-blue-500"
-                  : "hover:text-blue-500"
+                activeItem === item.name ? "text-blue-500" : "hover:text-blue-500"
               }`}
             >
               {item.name}
