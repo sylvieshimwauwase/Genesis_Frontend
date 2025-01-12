@@ -1,53 +1,61 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneRegex = /^[0-9]{10}$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/; // Password validation
+  const passwordRegex =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!identifier) {
-      setError('Please provide an email or phone number.');
+      setError("Please provide an email or phone number.");
       return;
     }
     if (!emailRegex.test(identifier) && !phoneRegex.test(identifier)) {
-      setError('Please provide a valid email or phone number.');
+      setError("Please provide a valid email or phone number.");
       return;
     }
 
-   
     if (!passwordRegex.test(password)) {
-      setError('Password must be at least 8 characters long and include letters, numbers, and symbols.');
+      setError(
+        "Password must be at least 8 characters long and include letters, numbers, and symbols."
+      );
       return;
     }
 
-    // Validate password confirmation
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError("Passwords do not match.");
       return;
     }
 
-    // Clear error and handle registration (e.g., send data to the server)
-    setError('');
-    alert('Account created successfully!');
+    setError("");
 
-    // Reset form
-    setFirstName('');
-    setLastName('');
-    setIdentifier('');
-    setPassword('');
-    setConfirmPassword('');
+    // Simulate storing user data
+    const userData = {
+      name: `${firstName} ${lastName}`,
+      email: identifier,
+    };
+    localStorage.setItem("userData", JSON.stringify(userData));
+
+    alert("Account created successfully!");
+    navigate("/profile");
+
+    setFirstName("");
+    setLastName("");
+    setIdentifier("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
   return (
@@ -55,8 +63,14 @@ const Register = () => {
       <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
       {error && <p className="text-red-600 text-center mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form fields */}
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            First Name
+          </label>
           <input
             type="text"
             id="firstName"
@@ -67,7 +81,12 @@ const Register = () => {
           />
         </div>
         <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Last Name
+          </label>
           <input
             type="text"
             id="lastName"
@@ -78,7 +97,10 @@ const Register = () => {
           />
         </div>
         <div>
-          <label htmlFor="identifier" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="identifier"
+            className="block text-sm font-medium text-gray-700"
+          >
             Email or Phone Number
           </label>
           <input
@@ -91,7 +113,12 @@ const Register = () => {
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Password
+          </label>
           <input
             type="password"
             id="password"
@@ -102,7 +129,12 @@ const Register = () => {
           />
         </div>
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+          <label
+            htmlFor="confirmPassword"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Confirm Password
+          </label>
           <input
             type="password"
             id="confirmPassword"
@@ -121,13 +153,11 @@ const Register = () => {
           </button>
         </div>
       </form>
-
-      {/* Add link to navigate to login */}
       <div className="text-center mt-4">
         <p className="text-sm text-gray-600">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate("/login")}
             className="text-blue-600 hover:underline"
           >
             Login here
