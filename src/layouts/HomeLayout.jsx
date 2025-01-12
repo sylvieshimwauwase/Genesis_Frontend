@@ -34,7 +34,7 @@ const HomeLayout = () => {
       <div className="flex">
         <SideBar isSidebarVisible={isSidebarVisible} toggleSidebar={toggleSidebar} />
         <div
-          className={`flex flex-col w-full min-h-screen transition-all duration-300 ${
+          className={`flex flex-col w-full min-h-screen ${
             isSidebarVisible ? "md:ml-72" : "md:ml-0"
           }`}
         >

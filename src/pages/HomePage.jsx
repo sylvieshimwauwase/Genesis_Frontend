@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import tutor from "../assets/images/expert-tutors.png";
 import courses from "../assets/images/interactive-courses.png";
