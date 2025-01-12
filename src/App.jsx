@@ -19,6 +19,7 @@ import Notes from "./pages/notes/Notes";
 import NotesPage from "./pages/notes/NotesPage.jsx";
 import BooksPage from "./pages/books/BooksPage.jsx";
 import ForgotPassword from "./pages/ForgotPassword";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -31,12 +32,9 @@ function App() {
           <Route path="/books-content" element={<BooksPage />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/notes-content" element={<NotesPage />} />
-          <Route path="/works" element={<AboutUs />} />
+          {/* <Route path="/works" element={<AboutUs />} /> */}
           <Route path="/exams" element={<Exams />} />
-          <Route
-            path="/exam-content"
-            element={<ExamPage />}
-          />
+          <Route path="/exam-content" element={<ExamPage />} />
           <Route path="/scheme-of-work" element={<SchemeOfWork />} />
           <Route
             path="/scheme-of-work/:class/:subject"
@@ -53,8 +51,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/profile" element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
+
+    
   );
 }
 

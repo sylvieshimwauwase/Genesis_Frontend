@@ -1,5 +1,3 @@
-// src/components/DownloadButton.jsx
-
 import PropTypes from "prop-types";
 
 const DownloadButton = ({ pdfUrl, label }) => {
