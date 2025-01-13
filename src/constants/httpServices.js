@@ -7,6 +7,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 10000, // 10 seconds timeout
+  withCredentials: true, // Send cookies with requests
 });
 
 // Add a request interceptor
@@ -27,8 +28,11 @@ axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
-    // Handle errors globally
+  async (error) => {
+    if (error.response.status === 401) {
+      // Handle token refresh logic here
+      // Redirect to login if refresh fails
+    }
     return Promise.reject(error);
   }
 );
