@@ -20,6 +20,7 @@ import NotesPage from "./pages/notes/NotesPage.jsx";
 import BooksPage from "./pages/books/BooksPage.jsx";
 import ForgotPassword from "./pages/ForgotPassword";
 import UserProfile from "./pages/UserProfile";
+import Payment from "./pages/Payment";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
 
