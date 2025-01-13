@@ -1,67 +1,55 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
-import axios from "axios";
 import apiService from '../../constants/data.js';
-
-const fetchLevels = async () => {
-  try {
-    const levels = await apiService.getAll('levels');
-    console.log(levels);
-  } catch (error) {
-    console.error('Error fetching levels:', error);
-  }
-};
-
-fetchLevels();
 
 const Notes = () => {
   const navigate = useNavigate();
   const [currentLevel, setCurrentLevel] = useState("P6"); // Default level is P6
-  const [lessonDetails, setLessonDetails] = useState(null);
+  const [levels, setLevels] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const levels = {
-    P6: {
-      title: "P6 Notes",
-      subjects: ["Mathematics", "Social Studies", "Science", "English", "Kinyarwanda"],
-    },
-    "O'Level": {
-      title: "Ordinary Level Notes",
-      subLevels: ["Senior 1", "Senior 2", "Senior 3"],
-      subjects: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Entrepreneurship", "English", "Kinyarwanda"],
-    },
-    "A'Level": {
-      title: "Advanced Level Notes",
-      subLevels: ["Senior 4", "Senior 5", "Senior 6"],
-      subjects: ["Mathematics", "Physics", "Chemistry", "Biology", "Geography", "History", "Computer Science", "Economics", "Entrepreneurship", "General Studies"],
-    },
-  };
+  useEffect(() => {
+    const fetchLevelsAndNotes = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const fetchedLevels = await apiService.getAll('levels');
+        const fetchedNotes = await apiService.getAll('notes');
 
-  const handleNoteClick = async (subject) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/notes/${currentLevel}/${subject}`);
-      setLessonDetails(response.data);
-      navigate("/notes-content", {
-        state: {
-          lessonName: subject,
-          pdfUrl: response.data.pdfUrl,
-          videoUrl: response.data.videoUrl,
-        },
-      });
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+        const levelsData = fetchedLevels.reduce((acc, level) => {
+          acc[level.name] = {
+            title: `${level.name} Notes`,
+            subjects: [],
+            notes: fetchedNotes.filter(note => note.level === level.name)
+          };
+          return acc;
+        }, {});
+
+        setLevels(levelsData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLevelsAndNotes();
+  }, []);
+
+  const handleNoteClick = (note) => {
+    navigate("/notes-content", {
+      state: {
+        lessonName: note.title,
+        pdfUrl: note.pdf_document,
+        videoUrl: note.video_url,
+      },
+    });
   };
 
   const handleLevelChange = (level) => {
     setCurrentLevel(level);
-    setLessonDetails(null);
   };
 
   const currentLevelData = levels[currentLevel];
@@ -91,47 +79,26 @@ const Notes = () => {
         </div>
       </div>
 
-      <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
-        {currentLevelData.title}
-      </h1>
+      {currentLevelData && (
+        <>
+          <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
+            {currentLevelData.title}
+          </h1>
 
-      {currentLevelData.subLevels && (
-        <div className="mb-8 shadow-lg p-6 rounded bg-white">
-          {currentLevelData.subLevels.map((subLevel) => (
-            <div key={subLevel}>
-              <h2 className="text-xl font-bold mb-4 text-center">
-                {subLevel.toUpperCase()}
-              </h2>
-              <div className="flex flex-wrap gap-4 mb-6">
-                {currentLevelData.subjects.map((subject, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => handleNoteClick(subject)}
-                    className="shadow-md hover:shadow-lg transition-shadow rounded"
-                  >
-                    <Button label={subject.toUpperCase()} />
-                  </div>
-                ))}
-              </div>
+          <div className="mb-8 shadow-lg p-6 rounded bg-white">
+            <div className="flex flex-wrap gap-4">
+              {currentLevelData.notes.map((note) => (
+                <div
+                  key={note.id}
+                  onClick={() => handleNoteClick(note)}
+                  className="shadow-md hover:shadow-lg transition-shadow rounded"
+                >
+                  <Button label={note.title.toUpperCase()} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
-
-      {!currentLevelData.subLevels && (
-        <div className="mb-8 shadow-lg p-6 rounded bg-white">
-          <div className="flex flex-wrap gap-4">
-            {currentLevelData.subjects.map((subject, idx) => (
-              <div
-                key={idx}
-                onClick={() => handleNoteClick(subject)}
-                className="shadow-md hover:shadow-lg transition-shadow rounded"
-              >
-                <Button label={subject.toUpperCase()} />
-              </div>
-            ))}
           </div>
-        </div>
+        </>
       )}
 
       {loading && <div>Loading...</div>}
