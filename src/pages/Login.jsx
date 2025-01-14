@@ -162,7 +162,7 @@ function Login() {
       {/* Register Option */}
       <div className="mt-4 text-center">
         <p className="text-sm text-gray-600">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a href="/register" className="text-[#4175B7] hover:underline">
             Register here
           </a>

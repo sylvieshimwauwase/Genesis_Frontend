@@ -2,6 +2,8 @@ import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import Button from "../../components/Button";
 import apiService from '../../constants/data.js';
+import Loading from "../../components/Loading.jsx";
+import Error from "../../components/Error.jsx";
 
 const Exams = () => {
     const navigate = useNavigate();
@@ -168,8 +170,8 @@ const Exams = () => {
                 </div>
             )}
 
-            {loading && <div>Loading...</div>}
-            {error && <div>Error: {error}</div>}
+          {loading && <Loading />}
+          {error && <Error message={error} onClose={() => setError(null)} />}
         </div>
     );
 };
