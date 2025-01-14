@@ -3,13 +3,24 @@ import apiUrl from './apiUrl';
 // import refreshToken from './refreshToken';
 
 const axiosInstance = axios.create({
-  baseURL: apiUrl,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  // timeout: 10000, // 10 seconds timeout
-  // withCredentials: true, // Send cookies with requests
+    baseURL: apiUrl,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    // timeout: 10000, // 10 seconds timeout
+    // withCredentials: true, // Send cookies with requests
 });
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
 // // Add a request interceptor
 // axiosInstance.interceptors.request.use(
