@@ -1,175 +1,170 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axiosInstance from "../constants/httpServices";
+import Modal from "../components/Modal";
+import PropTypes from "prop-types";
 
-function Login() {
-  const [emailOrPhone, setEmailOrPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({ emailOrPhone: "", password: "" });
-  const navigate = useNavigate();
+function Login({ isModalOpen, setIsModalOpen, setIsRegisterModalOpen }) {
+    const [emailOrPhone, setEmailOrPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState({ emailOrPhone: "", password: "" });
 
-  // Validation functions
-  const isValidEmailOrPhone = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\d{10}$/;
-    return emailRegex.test(value) || phoneRegex.test(value);
-  };
+    const isValidEmailOrPhone = (value) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\d{10}$/;
+        return emailRegex.test(value) || phoneRegex.test(value);
+    };
 
-  const isValidPassword = (password) => password.length >= 6;
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError({ emailOrPhone: "", password: "" });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+        if (!emailOrPhone) {
+            setError((prev) => ({
+                ...prev,
+                emailOrPhone: "Email or phone is required.",
+            }));
+            return;
+        }
+        if (!isValidEmailOrPhone(emailOrPhone)) {
+            setError((prev) => ({
+                ...prev,
+                emailOrPhone: "Enter a valid email or 10-digit phone number.",
+            }));
+            return;
+        }
 
-    // Reset errors
-    setError({ emailOrPhone: "", password: "" });
+        if (!password) {
+            setError((prev) => ({
+                ...prev,
+                password: "Password is required.",
+            }));
+            return;
+        }
 
-    // Validate email or phone
-    if (!emailOrPhone) {
-      setError((prev) => ({
-        ...prev,
-        emailOrPhone: "Email or phone is required.",
-      }));
-      return;
-    }
-    if (!isValidEmailOrPhone(emailOrPhone)) {
-      setError((prev) => ({
-        ...prev,
-        emailOrPhone: "Enter a valid email or 10-digit phone number.",
-      }));
-      return;
-    }
+        setLoading(true);
 
-    // Validate password
-    if (!password) {
-      setError((prev) => ({
-        ...prev,
-        password: "Password is required.",
-      }));
-      return;
-    }
-    if (!isValidPassword(password)) {
-      setError((prev) => ({
-        ...prev,
-        password: "Password must be at least 6 characters long.",
-      }));
-      return;
-    }
+        try {
+            const response = await axiosInstance.post("api/login/", {
+                email_or_phone: emailOrPhone,
+                password: password,
+            });
 
-    // Simulate login process with loading
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+            const { user, refresh, access } = response.data;
 
-      // Simulate successful login
-      const isAuthenticated = true;
+            localStorage.setItem("authToken", access);
+            localStorage.setItem("refreshToken", refresh);
+            localStorage.setItem("user", JSON.stringify(user));
 
-      if (isAuthenticated) {
-        // Clear input fields
-        setEmailOrPhone("");
-        setPassword("");
+            setEmailOrPhone("");
+            setPassword("");
+            window.location.href = "/";
+            setIsModalOpen(false);
+        } catch (err) {
+            console.error("Error logging in:", err);
+            setError((prev) => ({
+                ...prev,
+                emailOrPhone: "Invalid credentials. Please try again.",
+            }));
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        // Store session in localStorage
-        localStorage.setItem(
-          "userSession",
-          JSON.stringify({ emailOrPhone, isAuthenticated: true })
-        );
+    return (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <div className="mx-auto bg-white">
+                <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label
+                            htmlFor="emailOrPhone"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Email or Phone
+                        </label>
+                        <input
+                            type="text"
+                            id="emailOrPhone"
+                            className={`w-full px-4 py-2 border ${
+                                error.emailOrPhone ? "border-red-500" : "border-gray-300"
+                            } rounded-md focus:outline-none`}
+                            placeholder="Enter your email or phone number"
+                            value={emailOrPhone}
+                            onChange={(e) => setEmailOrPhone(e.target.value)}
+                        />
+                        {error.emailOrPhone && (
+                            <p className="text-red-500 text-sm mt-1">{error.emailOrPhone}</p>
+                        )}
+                    </div>
 
-        // Navigate to dashboard
-        navigate("/dashboard");
-      } else {
-        setError((prev) => ({
-          ...prev,
-          emailOrPhone: "Invalid credentials. Please try again.",
-        }));
-      }
-    }, 2000);
-  };
+                    <div>
+                        <label
+                            htmlFor="password"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            className={`w-full px-4 py-2 border ${
+                                error.password ? "border-red-500" : "border-gray-300"
+                            } rounded-md focus:outline-none`}
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        {error.password && (
+                            <p className="text-red-500 text-sm mt-1">{error.password}</p>
+                        )}
 
-  return (
-    <div className="max-w-sm mx-auto p-4 bg-white shadow-lg rounded-md mt-32">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Email/Phone Field */}
-        <div>
-          <label
-            htmlFor="emailOrPhone"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email or Phone
-          </label>
-          <input
-            type="text"
-            id="emailOrPhone"
-            className={`w-full px-4 py-2 border ${
-              error.emailOrPhone ? "border-red-500" : "border-gray-300"
-            } rounded-md focus:outline-none`}
-            placeholder="Enter your email or phone number"
-            value={emailOrPhone}
-            onChange={(e) => setEmailOrPhone(e.target.value)}
-          />
-          {error.emailOrPhone && (
-            <p className="text-red-500 text-sm mt-1">{error.emailOrPhone}</p>
-          )}
-        </div>
+                        <div className="mt-2 text-right">
+                            <a
+                                href="/forgot-password"
+                                className="text-sm text-[#4175B7] hover:underline"
+                            >
+                                Forgot Password?
+                            </a>
+                        </div>
+                    </div>
 
-        {/* Password Field */}
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className={`w-full px-4 py-2 border ${
-              error.password ? "border-red-500" : "border-gray-300"
-            } rounded-md focus:outline-none`}
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {error.password && (
-            <p className="text-red-500 text-sm mt-1">{error.password}</p>
-          )}
+                    <div className="text-center">
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`w-full py-2 rounded-md text-white font-medium ${
+                                loading ? "bg-gray-400" : "bg-[#4175B7] hover:bg-blue-500"
+                            }`}
+                        >
+                            {loading ? "Logging in..." : "Login"}
+                        </button>
+                    </div>
+                </form>
 
-          {/* Forgot Password */}
-          <div className="mt-2 text-right">
-            <a
-              href="/forgot-password"
-              className="text-sm text-[#4175B7] hover:underline"
-            >
-              Forgot Password?
-            </a>
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="text-center">
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-2 rounded-md text-white font-medium ${
-              loading ? "bg-gray-400" : "bg-[#4175B7] hover:bg-blue-500"
-            }`}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </div>
-      </form>
-
-      {/* Register Option */}
-      <div className="mt-4 text-center">
-        <p className="text-sm text-gray-600">
-          Don&apos;t have an account?{" "}
-          <a href="/register" className="text-[#4175B7] hover:underline">
-            Register here
-          </a>
-        </p>
-      </div>
-    </div>
-  );
+                <div className="mt-4 text-center">
+                    <p className="text-sm text-gray-600">
+                        Don&apos;t have an account?{" "}
+                        <button
+                            onClick={() => {
+                                setIsModalOpen(false);
+                                setIsRegisterModalOpen(true);
+                            }}
+                            className="text-[#4175B7] hover:underline"
+                        >
+                            Register here
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </Modal>
+    );
 }
+
+Login.propTypes = {
+    isModalOpen: PropTypes.bool.isRequired,
+    setIsModalOpen: PropTypes.func.isRequired,
+    setIsRegisterModalOpen: PropTypes.func.isRequired,
+};
 
 export default Login;
