@@ -1,10 +1,22 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import tutor from "../assets/images/expert-tutors.png";
 import courses from "../assets/images/interactive-courses.png";
 import learning from "../assets/images/flexible-learning.png";
+import Login from "../pages/Login";
+import Register from "../pages/Registration";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    setUser(loggedInUser);
+  }, []);
+
   return (
     <div className="bg-gray-100 min-h-screen">
       {/* Hero Section */}
@@ -18,12 +30,14 @@ const HomePage = () => {
             expert guidance.
           </p>
           <div className="flex justify-center gap-4">
-            <button
-              onClick={() => navigate("/register")}
-              className="bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-200"
-            >
-              Get Started
-            </button>
+            {!user && (
+              <button
+                onClick={() => setIsRegisterModalOpen(true)}
+                className="bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-200"
+              >
+                Get Started
+              </button>
+            )}
             <button
               onClick={() => navigate("/about-us")}
               className="bg-blue-800 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700"
@@ -140,20 +154,33 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      
+
       <section className="bg-[#4175B7] text-white py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-semibold mb-6">
             Ready to Start Your Learning Journey?
           </h2>
-          <button
-            onClick={() => navigate("/register")}
-            className="bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-200"
-          >
-            Join Us Today
-          </button>
+          {!user && (
+            <button
+              onClick={() => setIsRegisterModalOpen(true)}
+              className="bg-white text-blue-600 px-6 py-3 rounded-md font-semibold hover:bg-gray-200"
+            >
+              Join Us Today
+            </button>
+          )}
         </div>
       </section>
+
+      <Login
+        isModalOpen={isLoginModalOpen}
+        setIsModalOpen={setIsLoginModalOpen}
+        setIsRegisterModalOpen={setIsRegisterModalOpen}
+      />
+      <Register
+        isModalOpen={isRegisterModalOpen}
+        setIsModalOpen={setIsRegisterModalOpen}
+        setIsLoginModalOpen={setIsLoginModalOpen}
+      />
     </div>
   );
 };

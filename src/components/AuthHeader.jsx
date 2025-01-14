@@ -1,22 +1,31 @@
 import { FaSearch, FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
-import  avatar  from "../assets/images/avatar.png";
+import avatar from "../assets/images/avatar.png";
+import Login from "../pages/Login";
+import Register from "../pages/Registration";
+import Profile from "../pages/UserProfile";
+import logout from "../constants/logout.js";
 
-function AuthHeader({ toggleSidebar, user }) {
+function AuthHeader({ toggleSidebar }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("userSession");
-    window.location.href = "/";
+  const handleLogout = async () => {
+    await logout(setIsLoading);
   };
 
   const handleClickOutside = (event) => {
@@ -34,16 +43,14 @@ function AuthHeader({ toggleSidebar, user }) {
         const response = await axios.get("/api/search", {
           params: { query: trimmedSearchTerm },
         });
-        setSearchResults(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching search results:", error);
       }
     } else {
       console.warn("Invalid search term");
-      setSearchResults([]);
     }
 
-    // Clear the search input after submitting
     setSearchTerm("");
   };
 
@@ -57,15 +64,15 @@ function AuthHeader({ toggleSidebar, user }) {
   return (
     <header className="bg-[#333333] sticky top-0 left-0 min-h-20 w-full shadow-md z-50">
       <div className="flex h-full items-center justify-between max-w-7xl mx-auto px-4 py-3">
-        <button
-          onClick={toggleSidebar}
-          className="px-2 bg-transparent text-white rounded-md focus:outline-none"
-        >
-          <FaBars className="h-6 w-6" />
-        </button>
+        <div className="flex space-x-6">
+          <button
+            onClick={toggleSidebar}
+            className="px-2 bg-transparent text-white rounded-md focus:outline-none"
+          >
+            <FaBars className="h-6 w-6" />
+          </button>
 
-        <div className="flex items-center space-x-24">
-          <form onSubmit={handleSearch} className="flex items-center">
+          <form onSubmit={handleSearch} className="hidden sm:flex items-center">
             <input
               type="text"
               value={searchTerm}
@@ -80,60 +87,69 @@ function AuthHeader({ toggleSidebar, user }) {
               <FaSearch className="h-5 w-5" />
             </button>
           </form>
+        </div>
 
-          {/* {user ? ( */}
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={toggleDropdown}
-              className="flex items-center space-x-2 text-white mr-8"
-            >
-              <img
-                // src={`https://api.example.com/avatar/${
-                //   user.email || "default-avatar"
-                // }`}
-                src={
-                  user?.email
-                    ? `https://api.example.com/avatar/${user.email}`
-                    : avatar
-                }
-                // alt={`${user.name || "User"}'s avatar`}
-                alt={`${user?.name || "User"}'s avatar`}
-                className="h-8 w-8 rounded-full"
-              />
-              {/* <span className="text-sm">{user.name || "User"}</span> */}
-              <span className="text-sm">{user?.name || "User"}</span>
-            </button>
+        <div className="relative mr-8" ref={dropdownRef}>
+          {user ? (
+            <>
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center space-x-2 text-white"
+              >
+                <span className="text-sm">{user?.first_name + " " + user?.last_name || "User"}</span>
+                <img
+                  src={avatar}
+                  alt={`${user?.name || "User"}'s avatar`}
+                  className="h-8 w-8 rounded-full"
+                />
+              </button>
 
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                  <button
+                    onClick={() => setIsProfileModalOpen(true)}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    {isLoading ? 'Logging out...' : 'Logout'}
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="flex space-x-6">
                 <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition"
                 >
-                  Logout
+                  Login
+                </button>
+                <button
+                  onClick={() => setIsRegisterModalOpen(true)}
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 transition"
+                >
+                  Register
                 </button>
               </div>
-            )}
-          </div>
-          {/* ) : (
-            <p className="text-white text-sm">
-              You are currently using guest access (
-              <Link to="/login" className="text-blue-400 hover:underline">
-                Login
-              </Link>
-              )
-            </p>
-          )} */}
+              <Login isModalOpen={isLoginModalOpen} setIsModalOpen={setIsLoginModalOpen} setIsRegisterModalOpen={setIsRegisterModalOpen} />
+              <Register isModalOpen={isRegisterModalOpen} setIsModalOpen={setIsRegisterModalOpen} setIsLoginModalOpen={setIsLoginModalOpen} />
+            </>
+          )}
         </div>
       </div>
+      <Profile isModalOpen={isProfileModalOpen} setIsModalOpen={setIsProfileModalOpen} />
     </header>
   );
 }
+
+AuthHeader.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired,
+};
 
 export default AuthHeader;
