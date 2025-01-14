@@ -96,13 +96,13 @@ const Books = () => {
 
       {currentLevelData && (
         <>
-          <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
+          <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 mb-6 text-center">
             {currentLevelData.title}
           </h1>
 
           <div className="mb-8 shadow-lg p-6 rounded bg-white">
             {Object.keys(currentLevelData.classes).sort().map((className) => (
-              <div key={className}>
+              <div key={className} className="mb-10">
                 <h2 className="text-xl font-bold mb-4 text-center">
                   {className.toUpperCase()}
                 </h2>
