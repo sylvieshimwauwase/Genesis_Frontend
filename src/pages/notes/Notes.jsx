@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import apiService from '../../constants/data.js';
+import Loading from "../../components/Loading.jsx";
+import Error from "../../components/Error.jsx";
 
 const Notes = () => {
   const navigate = useNavigate();
@@ -11,7 +13,7 @@ const Notes = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchLevelsAndNotes = async () => {
+    const fetchLevelsClassesAndNotes = async () => {
       setLoading(true);
       setError(null);
       try {
@@ -20,12 +22,24 @@ const Notes = () => {
 
         const levelsData = fetchedLevels.reduce((acc, level) => {
           acc[level.name] = {
+            id: level.id,
             title: `${level.name} Notes`,
-            subjects: [],
-            notes: fetchedNotes.filter(note => note.level === level.name)
+            classes: {},
           };
           return acc;
         }, {});
+
+        fetchedNotes.forEach(note => {
+          if (levelsData[note.level]) {
+            if (!levelsData[note.level].classes[note.class_name]) {
+              levelsData[note.level].classes[note.class_name] = {
+                title: `${note.class_name} Notes`,
+                notes: [],
+              };
+            }
+            levelsData[note.level].classes[note.class_name].notes.push(note);
+          }
+        });
 
         setLevels(levelsData);
       } catch (err) {
@@ -35,7 +49,7 @@ const Notes = () => {
       }
     };
 
-    fetchLevelsAndNotes();
+    fetchLevelsClassesAndNotes();
   }, []);
 
   const handleNoteClick = (note) => {
@@ -54,12 +68,15 @@ const Notes = () => {
 
   const currentLevelData = levels[currentLevel];
 
+  // Sort levels by their id
+  const sortedLevels = Object.keys(levels).sort((a, b) => levels[a].id - levels[b].id);
+
   return (
     <div className="flex-grow p-6 bg-gray-100">
       <div className="flex justify-center items-center mt-6">
         <div className="rounded-sm mb-8 max-w-2xl w-full">
           <div className="flex mb-8 max-w-2xl w-full shadow-md">
-            {Object.keys(levels).map((level) => (
+            {sortedLevels.map((level) => (
               <button
                 key={level}
                 onClick={() => handleLevelChange(level)}
@@ -86,23 +103,30 @@ const Notes = () => {
           </h1>
 
           <div className="mb-8 shadow-lg p-6 rounded bg-white">
-            <div className="flex flex-wrap gap-4">
-              {currentLevelData.notes.map((note) => (
-                <div
-                  key={note.id}
-                  onClick={() => handleNoteClick(note)}
-                  className="shadow-md hover:shadow-lg transition-shadow rounded"
-                >
-                  <Button label={note.title.toUpperCase()} />
+            {Object.keys(currentLevelData.classes).sort().map((className) => (
+              <div key={className} className="mb-10">
+                <h2 className="text-xl font-bold mb-4 text-center">
+                  {className.toUpperCase()}
+                </h2>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  {currentLevelData.classes[className].notes.map((note) => (
+                    <div
+                      key={note.id}
+                      onClick={() => handleNoteClick(note)}
+                      className="shadow-md hover:shadow-lg transition-shadow rounded"
+                    >
+                      <Button label={note.title.toUpperCase()} />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </>
       )}
 
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error}</div>}
+      {loading && <Loading />}
+      {error && <Error message={error} onClose={() => setError(null)} />}
     </div>
   );
 };

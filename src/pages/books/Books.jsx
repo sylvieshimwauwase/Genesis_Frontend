@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import apiService from '../../constants/data.js';
+import Loading from "../../components/Loading.jsx";
+import Error from "../../components/Error.jsx";
 
 const Books = () => {
   const navigate = useNavigate();
@@ -11,22 +13,33 @@ const Books = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchLevelsAndBooks = async () => {
+    const fetchLevelsClassesAndBooks = async () => {
       setLoading(true);
       setError(null);
       try {
+        const fetchedLevels = await apiService.getAll('levels');
         const fetchedBooks = await apiService.getAll('books');
 
-        const levelsData = fetchedBooks.reduce((acc, book) => {
-          if (!acc[book.level]) {
-            acc[book.level] = {
-              title: `${book.class_name} Books`,
-              books: [],
-            };
-          }
-          acc[book.level].books.push(book);
+        const levelsData = fetchedLevels.reduce((acc, level) => {
+          acc[level.name] = {
+            id: level.id,
+            title: `${level.name} Books`,
+            classes: {},
+          };
           return acc;
         }, {});
+
+        fetchedBooks.forEach(book => {
+          if (levelsData[book.level]) {
+            if (!levelsData[book.level].classes[book.class_name]) {
+              levelsData[book.level].classes[book.class_name] = {
+                title: `${book.class_name} Books`,
+                books: [],
+              };
+            }
+            levelsData[book.level].classes[book.class_name].books.push(book);
+          }
+        });
 
         setLevels(levelsData);
       } catch (err) {
@@ -36,7 +49,7 @@ const Books = () => {
       }
     };
 
-    fetchLevelsAndBooks();
+    fetchLevelsClassesAndBooks();
   }, []);
 
   const handleBookClick = (book) => {
@@ -55,12 +68,15 @@ const Books = () => {
 
   const currentLevelData = levels[currentLevel];
 
+  // Sort levels by their id
+  const sortedLevels = Object.keys(levels).sort((a, b) => levels[a].id - levels[b].id);
+
   return (
     <div className="flex-grow p-6 bg-gray-100">
       <div className="flex justify-center items-center mt-6">
         <div className="rounded-sm mb-8 max-w-2xl w-full">
           <div className="flex mb-8 max-w-2xl w-full shadow-md">
-            {Object.keys(levels).map((level) => (
+            {sortedLevels.map((level) => (
               <button
                 key={level}
                 onClick={() => handleLevelChange(level)}
@@ -82,28 +98,35 @@ const Books = () => {
 
       {currentLevelData && (
         <>
-          <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
+          <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 mb-6 text-center">
             {currentLevelData.title}
           </h1>
 
           <div className="mb-8 shadow-lg p-6 rounded bg-white">
-            <div className="flex flex-wrap gap-4">
-              {currentLevelData.books.map((book) => (
-                <div
-                  key={book.id}
-                  onClick={() => handleBookClick(book)}
-                  className="shadow-md hover:shadow-lg transition-shadow rounded"
-                >
-                  <Button label={book.title.toUpperCase()} />
+            {Object.keys(currentLevelData.classes).sort().map((className) => (
+              <div key={className} className="mb-10">
+                <h2 className="text-xl font-bold mb-4 text-center">
+                  {className.toUpperCase()}
+                </h2>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  {currentLevelData.classes[className].books.map((book) => (
+                    <div
+                      key={book.id}
+                      onClick={() => handleBookClick(book)}
+                      className="shadow-md hover:shadow-lg transition-shadow rounded"
+                    >
+                      <Button label={book.title.toUpperCase()} />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </>
       )}
 
-      {loading && <div>Loading...</div>}
-      {error && <div>Error: {error}</div>}
+      {loading && <Loading />}
+      {error && <Error message={error} onClose={() => setError(null)} />}
     </div>
   );
 };
