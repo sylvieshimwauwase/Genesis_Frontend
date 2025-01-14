@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import logo from "../assets/images/GenesisOfficialLogo.png";
 import {
     FaInfoCircle,
@@ -11,6 +11,7 @@ import {
     FaBriefcase,
     FaDownload,
 } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 const SideBar = (props) => {
     const [activeItem, setActiveItem] = useState("");
@@ -47,17 +48,19 @@ const SideBar = (props) => {
         `}
         >
             <div className="flex min-h-20 justify-center space-x-6 items-center bg-[#333333]">
-                <img
-                    src={logo}
-                    alt="Logo"
-                    className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10"
-                />
-                <div>
-                    <h2 className="text-white font-bold text-xl tracking-widest">
-                        GENESIS
-                    </h2>
-                    <p className="text-white text-xs"> E-Learning</p>
-                </div>
+                <Link to="/" className="flex items-center space-x-6">
+                    <img
+                        src={logo}
+                        alt="Logo"
+                        className="h-10 w-10 md:h-8 md:w-8 lg:h-10 lg:w-10"
+                    />
+                    <div>
+                        <h2 className="text-white font-bold text-xl tracking-widest">
+                            GENESIS
+                        </h2>
+                        <p className="text-white text-xs"> E-Learning</p>
+                    </div>
+                </Link>
             </div>
             <div className="overflow-y-scroll">
                 {menuItems.map((item) => (
@@ -87,5 +90,10 @@ const SideBar = (props) => {
         </div>
     );
 };
+
+SideBar.propTypes = {
+    isSidebarVisible: PropTypes.bool.isRequired,
+    toggleSidebar: PropTypes.func.isRequired,
+}
 
 export default SideBar;
