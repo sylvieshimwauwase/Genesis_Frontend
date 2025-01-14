@@ -1,65 +1,49 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import apiService from '../../constants/data.js';
 
 const Notes = () => {
   const navigate = useNavigate();
   const [currentLevel, setCurrentLevel] = useState("P6"); // Default level is P6
+  const [levels, setLevels] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const levels = {
-    P6: {
-      title: "P6 Notes",
-      notes: [
-        "Mathematics",
-        "Social Studies",
-        "Science Elementary Technology",
-        "English",
-        "Kinyarwanda",
-      ],
-      pdfPath: "p6",
-    },
-    "O'Level": {
-      title: "Ordinary Level Notes",
-      subLevels: ["Senior 1", "Senior 2", "Senior 3"],
-      notes: [
-        "Mathematics",
-        "Physics",
-        "Chemistry",
-        "Biology",
-        "Geography",
-        "History",
-        "Entrepreneurship",
-        "English",
-        "Kinyarwanda",
-      ],
-      pdfPath: "ordinary",
-    },
-    "A'Level": {
-      title: "Advanced Level Notes",
-      subLevels: ["Senior 4", "Senior 5", "Senior 6"],
-      notes: [
-        "Mathematics",
-        "Physics",
-        "Chemistry",
-        "Biology",
-        "Geography",
-        "History",
-        "Computer Science",
-        "Economics",
-        "Entrepreneurship",
-        "General Studies",
-      ],
-      pdfPath: "advanced",
-    },
-  };
+  useEffect(() => {
+    const fetchLevelsAndNotes = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const fetchedLevels = await apiService.getAll('levels');
+        const fetchedNotes = await apiService.getAll('notes');
 
-  const handleNoteClick = (subject) => {
+        const levelsData = fetchedLevels.reduce((acc, level) => {
+          acc[level.name] = {
+            title: `${level.name} Notes`,
+            subjects: [],
+            notes: fetchedNotes.filter(note => note.level === level.name)
+          };
+          return acc;
+        }, {});
+
+        setLevels(levelsData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLevelsAndNotes();
+  }, []);
+
+  const handleNoteClick = (note) => {
     navigate("/notes-content", {
       state: {
-        lessonName: subject,
-        content: `This is the content for ${subject}.`,
-        pdfUrl: `/pdfs/notes/${subject.toLowerCase().replace(" ", "-")}.pdf`,
-        videoUrl: `https://www.youtube.com/embed/exampleVideoID`,
+        lessonName: note.title,
+        pdfUrl: note.pdf_document,
+        videoUrl: note.video_url,
       },
     });
   };
@@ -93,47 +77,26 @@ const Notes = () => {
         </div>
       </div>
 
-      <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
-        {levels[currentLevel].title}
-      </h1>
+      {currentLevelData && (
+        <>
+          <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
+            {currentLevelData.title}
+          </h1>
 
-      {currentLevel !== "P6" && (
-        <div className="mb-8 shadow-lg p-6 rounded bg-white">
-          {levels[currentLevel].subLevels.map((subLevel) => (
-            <div key={subLevel}>
-              <h2 className="text-xl font-bold mb-4 text-center">
-                {subLevel.toUpperCase()}
-              </h2>
-              <div className="flex flex-wrap gap-4 mb-6">
-                {levels[currentLevel].notes.map((note, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => handleNoteClick(note)}
-                    className="shadow-md hover:shadow-lg transition-shadow rounded"
-                  >
-                    <Button label={note.toUpperCase()} />
-                  </div>
-                ))}
-              </div>
+          <div className="mb-8 shadow-lg p-6 rounded bg-white">
+            <div className="flex flex-wrap gap-4">
+              {currentLevelData.notes.map((note) => (
+                <div
+                  key={note.id}
+                  onClick={() => handleNoteClick(note)}
+                  className="shadow-md hover:shadow-lg transition-shadow rounded"
+                >
+                  <Button label={note.title.toUpperCase()} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
-
-      {currentLevel === "P6" && (
-        <div className="mb-8 shadow-lg p-6 rounded bg-white">
-          <div className="flex flex-wrap gap-4">
-            {levels[currentLevel].notes.map((note, idx) => (
-              <div
-                key={idx}
-                onClick={() => handleNoteClick(note)}
-                className="shadow-md hover:shadow-lg transition-shadow rounded"
-              >
-                <Button label={note.toUpperCase()} />
-              </div>
-            ))}
           </div>
-        </div>
+        </>
       )}
     </div>
   );

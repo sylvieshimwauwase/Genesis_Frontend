@@ -1,64 +1,50 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import apiService from '../../constants/data.js';
 
 const Books = () => {
   const navigate = useNavigate();
   const [currentLevel, setCurrentLevel] = useState("P6"); // Default level is P6
+  const [levels, setLevels] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const levels = {
-    P6: {
-      title: "P6 Books",
-      books: [
-        "Mathematics",
-        "Social Studies",
-        "Science Elementary Technology",
-        "English",
-        "Kinyarwanda",
-      ],
-      pdfPath: "p6",
-    },
-    "O'Level": {
-      title: "Ordinary Level Books",
-      subLevels: ["Senior 1", "Senior 2", "Senior 3"],
-      books: [
-        "Mathematics",
-        "Physics",
-        "Chemistry",
-        "Biology",
-        "Geography",
-        "History",
-        "Entrepreneurship",
-        "English",
-        "Kinyarwanda",
-      ],
-      pdfPath: "ordinary",
-    },
-    "A'Level": {
-      title: "Advanced Level Books",
-      subLevels: ["Senior 4", "Senior 5", "Senior 6"],
-      books: [
-        "Mathematics",
-        "Physics",
-        "Chemistry",
-        "Biology",
-        "Geography",
-        "History",
-        "Computer Science",
-        "Economics",
-        "Entrepreneurship",
-        "General Studies",
-      ],
-      pdfPath: "advanced",
-    },
-  };
+  useEffect(() => {
+    const fetchLevelsAndBooks = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const fetchedBooks = await apiService.getAll('books');
 
-  const handleBookClick = (subject) => {
+        const levelsData = fetchedBooks.reduce((acc, book) => {
+          if (!acc[book.level]) {
+            acc[book.level] = {
+              title: `${book.class_name} Books`,
+              books: [],
+            };
+          }
+          acc[book.level].books.push(book);
+          return acc;
+        }, {});
+
+        setLevels(levelsData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLevelsAndBooks();
+  }, []);
+
+  const handleBookClick = (book) => {
     navigate("/books-content", {
       state: {
-        lessonName: subject,
-        content: `This is the content for ${subject}.`,
-        pdfUrl: `/pdfs/notes/${subject.toLowerCase().replace(" ", "-")}.pdf`,
+        lessonName: book.title,
+        content: `This is the content for ${book.title}.`,
+        pdfUrl: book.pdf_document,
       },
     });
   };
@@ -67,12 +53,14 @@ const Books = () => {
     setCurrentLevel(level);
   };
 
+  const currentLevelData = levels[currentLevel];
+
   return (
     <div className="flex-grow p-6 bg-gray-100">
       <div className="flex justify-center items-center mt-6">
         <div className="rounded-sm mb-8 max-w-2xl w-full">
           <div className="flex mb-8 max-w-2xl w-full shadow-md">
-            {["P6", "O'Level", "A'Level"].map((level) => (
+            {Object.keys(levels).map((level) => (
               <button
                 key={level}
                 onClick={() => handleLevelChange(level)}
@@ -92,48 +80,30 @@ const Books = () => {
         </div>
       </div>
 
-      <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
-        {levels[currentLevel].title}
-      </h1>
+      {currentLevelData && (
+        <>
+          <h1 className="bg-[#4175B7] text-4xl font-bold text-white py-4 my-6 text-center">
+            {currentLevelData.title}
+          </h1>
 
-      {currentLevel !== "P6" && (
-        <div className="mb-8 shadow-lg p-6 rounded bg-white">
-          {levels[currentLevel].subLevels.map((subLevel) => (
-            <div key={subLevel}>
-              <h2 className="text-xl font-bold mb-4 text-center">
-                {subLevel.toUpperCase()}
-              </h2>
-              <div className="flex flex-wrap gap-4 mb-6">
-                {levels[currentLevel].books.map((book, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => handleBookClick(book)}
-                    className="shadow-md hover:shadow-lg transition-shadow rounded"
-                  >
-                    <Button label={book.toUpperCase()} />
-                  </div>
-                ))}
-              </div>
+          <div className="mb-8 shadow-lg p-6 rounded bg-white">
+            <div className="flex flex-wrap gap-4">
+              {currentLevelData.books.map((book) => (
+                <div
+                  key={book.id}
+                  onClick={() => handleBookClick(book)}
+                  className="shadow-md hover:shadow-lg transition-shadow rounded"
+                >
+                  <Button label={book.title.toUpperCase()} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        </>
       )}
 
-      {currentLevel === "P6" && (
-        <div className="mb-8 shadow-lg p-6 rounded bg-white">
-          <div className="flex flex-wrap gap-4">
-            {levels[currentLevel].books.map((book, idx) => (
-              <div
-                key={idx}
-                onClick={() => handleBookClick(book)}
-                className="shadow-md hover:shadow-lg transition-shadow rounded"
-              >
-                <Button label={book.toUpperCase()} />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error}</div>}
     </div>
   );
 };
