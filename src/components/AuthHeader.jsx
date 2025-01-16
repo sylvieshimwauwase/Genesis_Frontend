@@ -1,4 +1,4 @@
-import { FaSearch, FaBars } from "react-icons/fa";
+import { FaSearch, FaBars, FaInfoCircle, FaClipboardList, FaPenAlt, FaBook, FaRegFileAlt, FaFileAlt, FaBriefcase, FaDownload } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
@@ -9,9 +9,21 @@ import Register from "../pages/Registration";
 import Profile from "../pages/UserProfile";
 import logout from "../constants/logout.js";
 
+const shortcuts = [
+  { name: "About Us", path: "/about-us" },
+  { name: "Scheme of Work", path: "/scheme-of-work" },
+  { name: "Lesson Plan", path: "/lesson-plan" },
+  { name: "Books", path: "/books" },
+  { name: "Notes", path: "/notes" },
+  { name: "Exams", path: "/exams" },
+  { name: "Works", path: "/works" },
+  { name: "Downloads", path: "/downloads" },
+];
+
 function AuthHeader({ toggleSidebar }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -34,24 +46,17 @@ function AuthHeader({ toggleSidebar }) {
     }
   };
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
-
-    const trimmedSearchTerm = searchTerm.trim();
+  const handleSearchChange = (event) => {
+    const trimmedSearchTerm = event.target.value.trim().toLowerCase();
+    setSearchTerm(trimmedSearchTerm);
     if (trimmedSearchTerm) {
-      try {
-        const response = await axios.get("/api/search", {
-          params: { query: trimmedSearchTerm },
-        });
-        console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching search results:", error);
-      }
+      const filteredSuggestions = shortcuts.filter((shortcut) =>
+        shortcut.name.toLowerCase().includes(trimmedSearchTerm)
+      );
+      setSuggestions(filteredSuggestions);
     } else {
-      console.warn("Invalid search term");
+      setSuggestions([]);
     }
-
-    setSearchTerm("");
   };
 
   useEffect(() => {
@@ -72,11 +77,11 @@ function AuthHeader({ toggleSidebar }) {
             <FaBars className="h-6 w-6" />
           </button>
 
-          <form onSubmit={handleSearch} className="hidden sm:flex items-center">
+          <form className="hidden sm:flex items-center relative">
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
               placeholder="Search..."
               className="px-3 py-2 bg-white border border-gray-600 rounded-l-md focus:outline-none text-sm"
             />
@@ -86,6 +91,15 @@ function AuthHeader({ toggleSidebar }) {
             >
               <FaSearch className="h-5 w-5" />
             </button>
+            {suggestions.length > 0 && (
+              <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md mt-1 z-10">
+                {suggestions.map((suggestion, index) => (
+                  <li key={index} className="px-4 py-2 hover:bg-gray-200 cursor-pointer">
+                    <Link to={suggestion.path}>{suggestion.name}</Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </form>
         </div>
 
