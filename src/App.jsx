@@ -20,7 +20,10 @@ import NotesPage from "./pages/notes/NotesPage.jsx";
 import BooksPage from "./pages/books/BooksPage.jsx";
 import ForgotPassword from "./pages/ForgotPassword";
 import UserProfile from "./pages/UserProfile";
+
 import Payment from "./pages/Payment";
+import Download from "./pages/Download";
+import Works from "./pages/Works";
 
 function App() {
   return (
@@ -33,7 +36,6 @@ function App() {
           <Route path="/books-content" element={<BooksPage />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/notes-content" element={<NotesPage />} />
-          {/* <Route path="/works" element={<AboutUs />} /> */}
           <Route path="/exams" element={<Exams />} />
           <Route path="/exam-content" element={<ExamPage />} />
           <Route path="/scheme-of-work" element={<SchemeOfWork />} />
@@ -46,6 +48,8 @@ function App() {
             path="/lesson-plan/:class/:subject"
             element={<LessonPlanPage />}
           />
+          <Route path="/downloads" element={<Download />} />
+          <Route path="/works" element={<Works />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
